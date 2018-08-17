@@ -1,0 +1,54 @@
+server:
+  port: 9100
+
+spring:
+  profiles:
+    active: dev
+
+---
+# dev
+spring:
+    profiles: dev
+    redis:
+        database:  15
+        host:  172.28.18.61
+        port:  6379
+        password:
+        pool:
+            max-active:  16
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
+
+---
+# ucloud
+spring:
+    profiles: ucloud
+    redis:
+        database:  0
+        host:  192.168.0.58
+        port:  6379
+        password:
+        pool:
+            max-active:  16
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
+
+---
+# production
+spring:
+    profiles: production
+    redis:
+        database:  0
+        host:  192.168.0.58
+        port:  6379
+        password:
+        pool:
+            max-active:  16
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
