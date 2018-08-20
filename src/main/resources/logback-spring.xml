@@ -2,7 +2,7 @@
 <configuration>
 
 	<!--定义日志文件的存储地址 勿在 LogBack的配置中使用相对路径 -->
-	<property name="LOG_HOME" value="/tmp/log" />
+	<property name="LOG_HOME" value="/opt/apps/logs" />
 
 	<!-- 控制台输出 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -15,7 +15,7 @@
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>${LOG_HOME}/logs/smsismp.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>${LOG_HOME}/cdtp-status.log.%d{yyyy-MM-dd}.log</FileNamePattern>
 			<!--日志文件保留天数 -->
 			<MaxHistory>30</MaxHistory>
 		</rollingPolicy>
@@ -36,19 +36,19 @@
     </root>
 
 	<!-- 定义各个包的详细路径，继承root宝的值 -->
-	<logger name="com.hry.spring.log" level="INFO" />
-	<logger name="com.hry.spring" level="TRACE" />
+	<!--<logger name="com.hry.spring.log" level="INFO" />
+	<logger name="com.hry.spring" level="TRACE" />-->
 
  	<!-- 此值由 application.properties的spring.profiles.active=dev指定-->
 	<springProfile name="dev">
 		<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
-		<property name="LOG_HOME" value="/tmp/log" />
+		<property name="LOG_HOME" value="/opt/apps/logs" />
 		<logger name="org.springboot.sample" level="DEBUG" />
 	</springProfile>
 
-	<springProfile name="pro">
+	<springProfile name="ucloud">
 		<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
-		<property name="LOG_HOME" value="/home" />
+		<property name="LOG_HOME" value="/opt/apps/logs" />
 		<logger name="org.springboot.sample2" level="INFO" />
 	</springProfile>
 
