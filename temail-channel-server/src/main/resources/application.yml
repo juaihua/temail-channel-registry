@@ -1,0 +1,111 @@
+server:
+  port: 9100
+
+spring:
+  profiles:
+    active: dev
+
+---
+# dev
+spring:
+    profiles: dev
+    redis:
+        database:  5
+        host:  172.28.18.61
+        port:  6379
+        password:
+        pool:
+            max-active:  16
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
+
+statusKeepAlive:
+    offLineServerTTL: 300000
+    handleMaxTime: 6000000
+    taskDelay: 60
+    initDelay: 60
+    taskBuffer: false
+
+channel:
+  serverPort: 9999
+
+---
+# frontend
+spring:
+    profiles: frontend
+    redis:
+        database:  1
+        host:  192.168.0.206
+        port:  7389
+        password:
+        pool:
+            max-active:  16
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
+
+statusKeepAlive:
+    offLineServerTTL: 300000
+    handleMaxTime: 6000000
+    taskDelay: 60
+    initDelay: 60
+    taskBuffer: false
+
+channel:
+  serverPort: 9999
+
+---
+# backend
+spring:
+    profiles: backend
+    redis:
+        database:  1
+        host:  192.168.15.190
+        port:  7389
+        password:
+        pool:
+            max-active:  16
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
+
+statusKeepAlive:
+    offLineServerTTL: 300000
+    handleMaxTime: 6000000
+    taskDelay: 60
+    initDelay: 60
+    taskBuffer: false
+
+channel:
+  serverPort: 9999
+
+---
+# production
+spring:
+    profiles: production
+    redis:
+        database:  1
+        host:  192.168.0.58
+        port:  6379
+        password:
+        pool:
+            max-active:  5
+            max-wait:  -1
+            max-idle:  8
+            min-idle:  2
+        timeout:  5000
+
+
+statusKeepAlive:
+    offLineServerTTL: 300000
+    handleMaxTime: 6000000
+    taskDelay: 60
+    initDelay: 60
+    taskBuffer: false
+
+channel:
+  serverPort: 9999
