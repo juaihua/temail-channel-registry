@@ -10,23 +10,24 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemailAccountStatusUpdateResponse {
 
-    private String msg;
+  private String msg;
 
-    private TemailAccountStatusUpdateResponseResult result;
+  private TemailAccountStatusUpdateResponseResult result;
 
-    public TemailAccountStatusUpdateResponse(boolean isSuccess) {
-        this.result = isSuccess ? TemailAccountStatusUpdateResponseResult.success : TemailAccountStatusUpdateResponseResult.fail;
-        this.msg = isSuccess ? "" : "fail";
-    }
+  public TemailAccountStatusUpdateResponse(boolean isSuccess) {
+    this.result =
+        isSuccess ? TemailAccountStatusUpdateResponseResult.success : TemailAccountStatusUpdateResponseResult.fail;
+    this.msg = isSuccess ? "" : "fail";
+  }
 
-    public TemailAccountStatusUpdateResponse(TemailAccountStatusUpdateResponseResult result, String msg) {
-        this.result = result;
-        this.msg = msg;
-    }
+  public TemailAccountStatusUpdateResponse(TemailAccountStatusUpdateResponseResult result, String msg) {
+    this.result = result;
+    this.msg = msg;
+  }
 
 
-    public static enum TemailAccountStatusUpdateResponseResult{
-        success,fail;
-    }
+  public static enum TemailAccountStatusUpdateResponseResult {
+    success, fail;
+  }
 
 }

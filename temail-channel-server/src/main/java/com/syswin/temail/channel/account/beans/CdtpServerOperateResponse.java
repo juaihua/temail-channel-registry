@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CdtpServerOperateResponse {
 
-    private String msg;
+  private String msg;
 
-    private boolean isSucess;
+  private boolean isSucess;
 
 }

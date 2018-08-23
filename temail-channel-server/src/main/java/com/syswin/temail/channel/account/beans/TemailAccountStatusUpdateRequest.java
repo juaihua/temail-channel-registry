@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemailAccountStatusUpdateRequest {
 
-    private String account;
+  private String account;
 
-    private OptType optype;
+  private OptType optype;
 
-    private TemailAccountStatus status;
+  private TemailAccountStatus status;
 
-    public static enum OptType{
-        add,del;
-    }
+  public static enum OptType {
+    add, del;
+  }
 }

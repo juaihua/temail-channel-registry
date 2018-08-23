@@ -10,17 +10,16 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class SpringContext implements ApplicationContextAware {
 
-    private static ApplicationContext applicationContext;
+  private static ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        applicationContext = applicationContext;
-    }
+  public static ConnectionStatusServiceImpl getConnectionStatusServiceImpl() {
+    return applicationContext.getBean(ConnectionStatusServiceImpl.class);
+  }
 
-
-    public static ConnectionStatusServiceImpl getConnectionStatusServiceImpl(){
-        return applicationContext.getBean(ConnectionStatusServiceImpl.class);
-    }
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    applicationContext = applicationContext;
+  }
 
 
 }

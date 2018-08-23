@@ -19,20 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConnectionStatusController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionStatusController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionStatusController.class);
 
-    @Autowired
-    private ConnectionStatusServiceImpl connectionStatusService;
+  @Autowired
+  private ConnectionStatusServiceImpl connectionStatusService;
 
-    @PostMapping(value = "/updateStatus")
-    public TemailAccountStatusUpdateResponse updateStatus(@RequestBody TemailAccountStatusUpdateRequest temailAccountStatusUpdateRequest){
-        return connectionStatusService.updateStatus(temailAccountStatusUpdateRequest);
-    }
+  @PostMapping(value = "/updateStatus")
+  public TemailAccountStatusUpdateResponse updateStatus(
+      @RequestBody TemailAccountStatusUpdateRequest temailAccountStatusUpdateRequest) {
+    return connectionStatusService.updateStatus(temailAccountStatusUpdateRequest);
+  }
 
 
-    @RequestMapping(value = "/locateStatus/{account}")
-    public TemailAccountStatusLocateResponse locateStatus(@PathVariable String account){
-        return connectionStatusService.locateStatus(account);
-    }
+  @RequestMapping(value = "/locateStatus/{account}")
+  public TemailAccountStatusLocateResponse locateStatus(@PathVariable String account) {
+    return connectionStatusService.locateStatus(account);
+  }
 
 }

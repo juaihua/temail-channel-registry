@@ -14,19 +14,19 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemailAccountStatus {
 
-    private String devId;
+  private String devId;
 
-    private String hostOf;
+  private String hostOf;
 
-    private String processId;
+  private String processId;
 
-    private String mqTopic;
+  private String mqTopic;
 
-    private String mqTag;
+  private String mqTag;
 
-    public String geneHashKey(){
-        return new StringBuilder(this.devId).append("-").append(this.hostOf).append("-")
-                       .append(this.processId).append("-").append(mqTopic).append("-").append(mqTag).toString();
-    }
+  public String geneHashKey() {
+    return new StringBuilder(this.devId).append("-").append(this.hostOf).append("-")
+        .append(this.processId).append("-").append(mqTopic).append("-").append(mqTag).toString();
+  }
 
 }

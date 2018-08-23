@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemailAccountStatusLocateResponse {
 
-    private String account;
+  private String account;
 
-    private List<TemailAccountStatus> statusList ;
+  private List<TemailAccountStatus> statusList;
 
 }
