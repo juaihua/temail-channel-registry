@@ -6,21 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by juaihua on 2018/8/14.
+ * Created by juaihua on 2018/8/20.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TemailAccountStatusUpdateRequest {
+public class CdtpServerOperateResponse {
 
-    private String account;
+    private String msg;
 
-    private OptType optype;
+    private boolean isSucess;
 
-    private TemailAccountStatus status;
-
-    public static enum OptType{
-        add,del;
-    }
 }

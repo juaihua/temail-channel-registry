@@ -3,7 +3,7 @@ package com.syswin.temail.controller;
 import com.syswin.temail.beans.TemailAccountStatusLocateResponse;
 import com.syswin.temail.beans.TemailAccountStatusUpdateRequest;
 import com.syswin.temail.beans.TemailAccountStatusUpdateResponse;
-import com.syswin.temail.service.ConnectionStatusService;
+import com.syswin.temail.service.ConnectionStatusServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class ConnectionStatusController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionStatusController.class);
 
     @Autowired
-    private ConnectionStatusService connectionStatusService;
+    private ConnectionStatusServiceImpl connectionStatusService;
 
     @PostMapping(value = "/updateStatus")
     public TemailAccountStatusUpdateResponse updateStatus(@RequestBody  TemailAccountStatusUpdateRequest temailAccountStatusUpdateRequest){
