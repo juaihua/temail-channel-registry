@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -24,7 +23,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-=======
 #Maven Project File
 target/
 bin/
@@ -104,4 +102,3 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
->>>>>>> 1b8cf7e6a170eb75a83d343e529e5501c85976d3
