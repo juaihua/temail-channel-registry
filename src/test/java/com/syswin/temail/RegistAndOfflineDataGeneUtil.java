@@ -18,34 +18,27 @@ public class RegistAndOfflineDataGeneUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistAndOfflineDataGeneUtil.class);
 
-    public static List<TemailAccountStatusUpdateRequest> temailAccountStatusUpdateRequests;
+    public static List<TemailAccountStatusUpdateRequest> temailAccountStatusUpdateRequests = new ArrayList<TemailAccountStatusUpdateRequest>();
 
-    public static List<CdtpServer> cdtpServers;
+    public static List<CdtpServer> cdtpServers = new ArrayList<CdtpServer>();
 
-    private static String[] ips = new String[30];
-
-    private static String[] processIds = new String[30];
+    private static int serverInstances = 30;
 
     private static final Random RANDOM = new Random(1);
 
     static {
-        for(int i = 0; i < 30; i++){
-            ips[i] = "192.168.197." + i;
-            processIds[i] = 9000 + i +"";
+        for(int i = 0; i < serverInstances; i++){
+            CdtpServer cdtpServer = new CdtpServer();
+            cdtpServer.setIp("192.168.197." + i);
+            cdtpServer.setProcessId(9000 + i +"");
+            cdtpServers.add(cdtpServer);
         }
     }
 
     public static void buildTestDatas(int size){
-        cdtpServers = new ArrayList<CdtpServer>(size);
-        temailAccountStatusUpdateRequests = new ArrayList<TemailAccountStatusUpdateRequest>(size);
         for(int i = 0; i < size; i++){
-            //gene CdtpServer
-            int hostAndProcessIndex = RANDOM.nextInt(ips.length);
-            CdtpServer cdtpServer = new CdtpServer();
-            cdtpServer.setIp(ips[hostAndProcessIndex]);
-            cdtpServer.setProcessId(processIds[hostAndProcessIndex]);
-            cdtpServers.add(cdtpServer);
-
+            int hostAndProcessIndex = RANDOM.nextInt(serverInstances);
+            CdtpServer cdtpServer = cdtpServers.get(hostAndProcessIndex);
             TemailAccountStatusUpdateRequest request = new TemailAccountStatusUpdateRequest();
             TemailAccountStatus status = new TemailAccountStatus();
             status.setMqTopic(CommonDataGeneUtil.extractChar(CommonDataGeneUtil.ExtractType.LOWER,8));

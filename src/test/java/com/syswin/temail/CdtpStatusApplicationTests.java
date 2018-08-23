@@ -1,6 +1,7 @@
 package com.syswin.temail;
 
 import com.google.gson.Gson;
+import com.syswin.temail.beans.CdtpServer;
 import com.syswin.temail.beans.TemailAccountStatus;
 import com.syswin.temail.beans.TemailAccountStatusUpdateRequest;
 import com.syswin.temail.service.ConnectionStatusServiceImpl;
@@ -20,17 +21,22 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Random;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CdtpStatusApplicationTests {
 
 
+    private static final Random RANDOM = new Random();
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CdtpStatusApplicationTests.class);
 
 
     static {
-        RegistAndOfflineDataGeneUtil.buildTestDatas(2000000);
+        RegistAndOfflineDataGeneUtil.buildTestDatas(20000);
     }
 
 
@@ -106,20 +112,21 @@ public class CdtpStatusApplicationTests {
     public void testServerRegistsAndOffLine(){
         ConnectionStatusServiceImpl connectionStatusService = webApplicationContext.getBean(ConnectionStatusServiceImpl.class);
 
-
-        /*for(CdtpServer server : RegistAndOfflineDataGeneUtil.cdtpServers){
+        //register servers to onLineServers
+        for(CdtpServer server : RegistAndOfflineDataGeneUtil.cdtpServers){
             connectionStatusService.registerOrRecorveryServer(server);
-        }*/
+        }
 
-        /*for(CdtpServer server : RegistAndOfflineDataGeneUtil.cdtpServers){
-            connectionStatusService.offLineTheServer(server);
-        }*/
+        //offLine serveal sververs, may be 0.2 *
+        for(CdtpServer server : RegistAndOfflineDataGeneUtil.cdtpServers){
+            if(RANDOM.nextDouble() < 0.2 ) connectionStatusService.offLineTheServer(server);
+        }
 
+        //register connections
+        for(TemailAccountStatusUpdateRequest request : RegistAndOfflineDataGeneUtil.temailAccountStatusUpdateRequests){
+          connectionStatusService.updateStatus(request);
+        }
 
 
     }
-
-
-
-
 }

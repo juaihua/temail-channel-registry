@@ -26,6 +26,7 @@ public class CommonDataGeneUtil {
     public static enum ExtractType{UPPER,LOWER,NUM};
 
     static {
+
         for(int i = 0; i < 26; i++){
             UPPER_CASE[i] = (char)((int)'A' + i);
             LOWER_CASE[i] = (char)((int)'a' + i);
