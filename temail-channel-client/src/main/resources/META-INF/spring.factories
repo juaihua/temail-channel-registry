@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.syswin.temail.cdtp.status.client.CdtpStatusClientAutoConfiguration
+com.syswin.temail.channel.client.CdtpStatusClientAutoConfiguration
