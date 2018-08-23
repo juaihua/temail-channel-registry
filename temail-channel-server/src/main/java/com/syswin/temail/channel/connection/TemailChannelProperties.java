@@ -9,15 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "channel")
-public class CdtpStatusProperties {
+public class TemailChannelProperties {
 
   private int serverPort;
+  private int readIdle;
 
-  public int getServerPort() {
-    return serverPort;
-  }
-
-  public void setServerPort(int serverPort) {
-    this.serverPort = serverPort;
-  }
 }

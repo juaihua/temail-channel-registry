@@ -9,18 +9,18 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>temail-channel-server</artifactId>
+  <artifactId>temail-gateway-demo</artifactId>
   <packaging>jar</packaging>
 
   <properties>
-    <temail-channel-core.version>1.0.0-SNAPSHOT</temail-channel-core.version>
+    <temail-channel-client.version>1.0.0-SNAPSHOT</temail-channel-client.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.syswin.temail</groupId>
-      <artifactId>temail-channel-core</artifactId>
-      <version>${temail-channel-core.version}</version>
+      <artifactId>temail-channel-client</artifactId>
+      <version>${temail-channel-client.version}</version>
     </dependency>
 
 
@@ -50,10 +50,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-redis</artifactId>
     </dependency>
 
     <dependency>
