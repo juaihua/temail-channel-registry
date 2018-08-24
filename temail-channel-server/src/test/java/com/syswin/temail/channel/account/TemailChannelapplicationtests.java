@@ -26,11 +26,11 @@ import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CdtpStatusApplicationTests {
+public class TemailChannelapplicationtests {
 
     private static final Random RANDOM = new Random();
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CdtpStatusApplicationTests.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(TemailChannelapplicationtests.class);
 
     static {RegistAndOfflineDataGeneUtil.buildTestDatas(10000);}
 
