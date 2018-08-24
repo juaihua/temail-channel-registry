@@ -10,8 +10,8 @@ import lombok.Getter;
  */
 @Getter
 public enum BizType {
-  HEART_BEAT(0, HeartBeatRequestBody.class, HeartBeatResponseBody.class),
-  SERVER_STATUS(1, ServerStatusRequestBody.class, ServerStatusResponseBody.class),
+  HEART_BEAT(0, HeartBeatRequest.class, HeartBeatResponse.class),
+  SERVER_STATUS(1, ServerStatusRequest.class, ServerStatusResponse.class),
   USER_STATUS(2, TemailAccountStatusUpdateRequest.class, TemailAccountStatusUpdateResponse.class);
 
   private final int code;

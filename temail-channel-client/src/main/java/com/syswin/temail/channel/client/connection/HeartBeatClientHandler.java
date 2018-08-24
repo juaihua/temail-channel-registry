@@ -1,13 +1,13 @@
-package com.syswin.temail.channel.client;
+package com.syswin.temail.channel.client.connection;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import com.syswin.temail.channel.core.entity.BizType;
+import com.syswin.temail.channel.core.entity.HeartBeatRequest;
+import com.syswin.temail.channel.core.entity.StatusRequest;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleUserEventChannelHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -18,15 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 @ChannelHandler.Sharable
 public class HeartBeatClientHandler extends SimpleUserEventChannelHandler<IdleStateEvent> {
 
-  private static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer("Heartbeat",
-      CharsetUtil.UTF_8));
+  private static final StatusRequest<HeartBeatRequest> HEARTBEAT
+      = new StatusRequest<>(BizType.HEART_BEAT, new HeartBeatRequest());
 
   @Override
-  protected void eventReceived(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
+  protected void eventReceived(ChannelHandlerContext ctx, IdleStateEvent evt) {
     IdleState state = evt.state();
     if (state == IdleState.WRITER_IDLE) {
-      // write heartbeat to server
-      ctx.writeAndFlush(HEARTBEAT_SEQUENCE.duplicate());
+      log.info("发送心跳信息！");
+      ctx.channel().writeAndFlush(HEARTBEAT);
     }
   }
 

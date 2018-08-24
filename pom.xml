@@ -12,6 +12,7 @@
     <module>temail-channel-core</module>
     <module>temail-channel-client</module>
     <module>temail-channel-server</module>
+    <module>temail-channel-client-demo</module>
   </modules>
 
   <parent>
@@ -63,7 +64,7 @@
       <url>http://maven.systoon.com/repository/public/</url>
     </repository>
   </repositories>
-
+  <!--部署管理 -->
   <distributionManagement>
     <repository>
       <id>nexus-releases</id>

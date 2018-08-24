@@ -4,7 +4,9 @@ server:
 spring:
   profiles:
     active: dev
-
+channel:
+  server-port: 8765
+  read-idle: 30
 ---
 # dev
 spring:

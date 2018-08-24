@@ -1,5 +1,6 @@
-package com.syswin.temail.channel.client;
+package com.syswin.temail.channel.client.connection;
 
+import com.syswin.temail.channel.client.TemailChannelClientProperties;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -26,19 +27,15 @@ public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter im
   private final Bootstrap bootstrap;
   private ChannelManager channelManager;
   private Timer timer;
-  private String host;
-  private int port;
   private int attempts;
-  private int maxAttempts;
+  private TemailChannelClientProperties properties;
 
   public ConnectionWatchdog(ChannelManager channelManager, Bootstrap bootstrap, Timer timer,
-      String host, int port, int maxAttempts) {
+      TemailChannelClientProperties properties) {
+    this.channelManager = channelManager;
     this.bootstrap = bootstrap;
     this.timer = timer;
-    this.host = host;
-    this.port = port;
-    this.maxAttempts = maxAttempts;
-    this.channelManager = channelManager;
+    this.properties = properties;
   }
 
   /**
@@ -54,12 +51,16 @@ public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter im
   @Override
   public void channelInactive(ChannelHandlerContext ctx) {
     log.info("链接关闭，将进行重连");
-    if (attempts < maxAttempts) {
+
+    int timeout = 1 << attempts;
+    if (timeout > properties.getMaxRetryInternal()) {
+      timeout = properties.getMaxRetryInternal();
+    } else {
       attempts++;
-      //重连的间隔时间会越来越长
-      int timeout = 2 << attempts;
-      timer.newTimeout(this, timeout, TimeUnit.MILLISECONDS);
     }
+
+    //重连的间隔时间会越来越长
+    timer.newTimeout(this, timeout, TimeUnit.SECONDS);
     ctx.fireChannelInactive();
   }
 
@@ -76,7 +77,7 @@ public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter im
           ch.pipeline().addLast(handlers());
         }
       });
-      future = bootstrap.connect(host, port).sync();
+      future = bootstrap.connect(properties.getHost(), properties.getPort()).sync();
       channelManager.setChannel(future.channel());
     }
 

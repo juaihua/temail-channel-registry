@@ -30,7 +30,7 @@ public class CdtpStatusApplicationTests {
 
     private static final Random RANDOM = new Random();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CdtpStatusApplicationTests.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CdtpStatusApplicationTests.class);
 
     static {RegistAndOfflineDataGeneUtil.buildTestDatas(10000);}
 

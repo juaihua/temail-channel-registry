@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2018-8-23
  */
 @Data
-public class HeartBeatRequestBody {
+public class HeartBeatResponse {
 
-  private String msg = "heartbeat";
+  private String msg = "SUCCESS";
 }
