@@ -1,4 +1,4 @@
-package com.syswin.temail.channel.client;
+package com.syswin.temail.channel.client.connection;
 
 import io.netty.channel.ChannelHandler;
 

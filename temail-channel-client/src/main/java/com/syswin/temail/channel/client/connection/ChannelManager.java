@@ -1,5 +1,6 @@
-package com.syswin.temail.channel.client;
+package com.syswin.temail.channel.client.connection;
 
+import com.syswin.temail.channel.client.TemailChannelClientProperties;
 import com.syswin.temail.channel.core.codec.StatusRequestEncoder;
 import com.syswin.temail.channel.core.codec.StatusResponseDecoder;
 import io.netty.bootstrap.Bootstrap;
@@ -20,12 +21,13 @@ import io.netty.util.Timer;
 import javax.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author 姚华成
  * @date 2018-08-21
  */
-
+@Slf4j
 public class ChannelManager {
 
   private final Timer timer = new HashedWheelTimer();
@@ -33,25 +35,25 @@ public class ChannelManager {
   @Setter
   @Getter
   private Channel channel;
-  private CdtpStatusClientProperties properties;
+  private TemailChannelClientProperties properties;
 
-  public ChannelManager(CdtpStatusClientProperties properties) {
+  public ChannelManager(TemailChannelClientProperties properties) {
     this.properties = properties;
   }
 
   @PostConstruct
-  public void connect() {
+  public void connect() throws InterruptedException {
     EventLoopGroup group = new NioEventLoopGroup();
     Bootstrap bootstrap = new Bootstrap();
     bootstrap.group(group).channel(NioSocketChannel.class).handler(new LoggingHandler(LogLevel.INFO));
 
     final ConnectionWatchdog watchdog = new ConnectionWatchdog(this, bootstrap, timer,
-        properties.getHost(), properties.getPort(), properties.getMaxAttempts()) {
+        properties) {
 
       public ChannelHandler[] handlers() {
         return new ChannelHandler[]{
             this,
-            new IdleStateHandler(properties.getReadIdle(), properties.getWriteIdle(), properties.getAllIdle()),
+            new IdleStateHandler(0, properties.getWriteIdle(), 0),
             new HeartBeatClientHandler(),
             new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, lengthFieldLength),
             new LengthFieldPrepender(lengthFieldLength),
@@ -62,25 +64,20 @@ public class ChannelManager {
     };
 
     //进行连接
-    try {
-      ChannelFuture future;
-      synchronized (bootstrap) {
-        bootstrap.handler(new ChannelInitializer<Channel>() {
-          //初始化channel
-          @Override
-          protected void initChannel(Channel ch) {
-            ch.pipeline().addLast(watchdog.handlers());
-          }
-        });
+    ChannelFuture future;
+    synchronized (bootstrap) {
+      bootstrap.handler(new ChannelInitializer<Channel>() {
+        //初始化channel
+        @Override
+        protected void initChannel(Channel ch) {
+          ch.pipeline().addLast(watchdog.handlers());
+        }
+      });
 
-        future = bootstrap.connect(properties.getHost(), properties.getPort());
-      }
-      // 以下代码在synchronized同步块外面是安全的
-      future.sync();
-      channel = future.channel();
-    } catch (Throwable t) {
-      throw new RuntimeException("connects to  fails", t);
+      future = bootstrap.connect(properties.getHost(), properties.getPort()).sync();
     }
+    // 以下代码在synchronized同步块外面是安全的
+    setChannel(future.channel());
   }
 
 }

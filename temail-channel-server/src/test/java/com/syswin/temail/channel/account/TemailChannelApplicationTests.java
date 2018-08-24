@@ -23,10 +23,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CdtpStatusApplicationTests {
+public class TemailChannelApplicationTests {
 
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CdtpStatusApplicationTests.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(TemailChannelApplicationTests.class);
 
 
   static {

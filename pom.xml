@@ -12,6 +12,7 @@
     <module>temail-channel-core</module>
     <module>temail-channel-client</module>
     <module>temail-channel-server</module>
+    <module>temail-channel-client-demo</module>
   </modules>
 
   <parent>
@@ -53,22 +54,18 @@
     </dependencies>
   </dependencyManagement>
 
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.8.RELEASE</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
-
+  <!--部署管理 -->
+  <distributionManagement>
+    <repository>
+      <id>nexus-releases</id>
+      <name>Nexus Releases Repository</name>
+      <url>http://maven.systoon.com/repository/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <name>Nexus Snapshots Repository</name>
+      <url>http://maven.systoon.com/repository/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>
