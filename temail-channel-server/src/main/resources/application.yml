@@ -22,8 +22,8 @@ spring:
         timeout:  5000
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 172800000
+    handleMaxTime: 10800000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
@@ -48,8 +48,8 @@ spring:
         timeout:  5000
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 172800000
+    handleMaxTime: 10800000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
@@ -74,8 +74,8 @@ spring:
         timeout:  5000
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 172800000
+    handleMaxTime: 10800000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
@@ -101,8 +101,8 @@ spring:
 
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 172800000
+    handleMaxTime: 10800000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false

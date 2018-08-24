@@ -3,11 +3,7 @@ package com.syswin.temail.channel.client;
 import com.syswin.temail.channel.core.codec.StatusRequestEncoder;
 import com.syswin.temail.channel.core.codec.StatusResponseDecoder;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -17,9 +13,10 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timer;
-import javax.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author 姚华成

@@ -22,7 +22,10 @@
 
   <properties>
     <temail-channel-core.version>1.0.0-SNAPSHOT</temail-channel-core.version>
-  </properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
 
   <dependencies>
     <dependency>
@@ -53,22 +56,24 @@
     </dependencies>
   </dependencyManagement>
 
+   <repositories>
+    <repository>
+      <id>systoon-public</id>
+      <name>Repository for systoon-public</name>
+      <url>http://maven.systoon.com/repository/public/</url>
+    </repository>
+  </repositories>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.8.RELEASE</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
-
-
+  <distributionManagement>
+    <repository>
+      <id>nexus-releases</id>
+      <name>Nexus Releases Repository</name>
+      <url>http://maven.systoon.com/repository/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <name>Nexus Snapshots Repository</name>
+      <url>http://maven.systoon.com/repository/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

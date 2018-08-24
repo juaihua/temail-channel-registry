@@ -1,38 +1,24 @@
 package com.syswin.temail.channel.account.service;
 
 
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_PREFIX_ON_REDIS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
-
-import com.syswin.temail.channel.account.beans.CdtpServer;
-import com.syswin.temail.channel.account.beans.CdtpServerOperateResponse;
-import com.syswin.temail.channel.account.beans.TemailAccountStatus;
-import com.syswin.temail.channel.account.beans.TemailAccountStatusLocateResponse;
-import com.syswin.temail.channel.account.beans.TemailAccountStatusUpdateRequest;
-import com.syswin.temail.channel.account.beans.TemailAccountStatusUpdateResponse;
+import com.syswin.temail.channel.account.beans.*;
 import com.syswin.temail.channel.account.contants.RedisOptConstants;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.*;
+import java.util.function.Consumer;
+
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.*;
+
 /**
  * Created by juaihua on 2018/8/20.
  */
+@Slf4j
 @Component
 public class ConnectionStatusServiceImpl {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionStatusServiceImpl.class);
 
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
@@ -70,7 +56,7 @@ public class ConnectionStatusServiceImpl {
       }
       return new TemailAccountStatusUpdateResponse(true);
     } catch (Exception e) {
-      LOGGER.error("error in update channel status..", e);
+      log.error("error in update channel status..", e);
       return new TemailAccountStatusUpdateResponse(false);
     }
   }
@@ -93,7 +79,7 @@ public class ConnectionStatusServiceImpl {
       });
       result.setStatusList(statusList);
     } catch (Exception e) {
-      LOGGER.error("redis locate fail.", e);
+      log.error("redis locate fail.", e);
       e.printStackTrace();
     }
     return result;
@@ -116,9 +102,10 @@ public class ConnectionStatusServiceImpl {
       cdtpServer.setCdtpServerState(CdtpServer.CdtpServerState.onLine);
       cdtpServer.setCurStateBeginTime(RedisOptConstants.format(new Date()));
       redisTemplate.opsForHash().put(ONLINE_SERVERS, cdtpServer.hashKey(), cdtpServer);
+      log.debug("register successfully : {} ",cdtpServer.toString());
       return new CdtpServerOperateResponse("register successfully.. ", true);
     } catch (Exception e) {
-      LOGGER.error("registerOrRecorveryServer operate fail..", e);
+      log.error("register fail... ",e.getMessage());
       return new CdtpServerOperateResponse("redis operate fail..", false);
     }
   }
@@ -139,9 +126,10 @@ public class ConnectionStatusServiceImpl {
       cdtpServer.setCurStateBeginTime(RedisOptConstants.format(new Date()));
       redisTemplate.opsForList().rightPush(OFFLINE_SERVERS, cdtpServer);
       redisTemplate.opsForHash().put(ONLINE_SERVERS, cdtpServer.hashKey(), cdtpServer);
+      log.debug("offLine the server success : {}", cdtpServer.toString());
       return new CdtpServerOperateResponse("offLine the server successfully...", true);
     } catch (Exception e) {
-      LOGGER.error("offLine the server fail...", e);
+      log.error("offLine the server fail...", e);
       return new CdtpServerOperateResponse("offLine the server fail..." + e.getMessage(), false);
     }
   }

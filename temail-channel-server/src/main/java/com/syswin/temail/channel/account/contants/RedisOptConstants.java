@@ -2,11 +2,12 @@ package com.syswin.temail.channel.account.contants;
 
 
 import com.syswin.temail.channel.account.timer.StatusSyncTimer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by juaihua on 2018/8/20.

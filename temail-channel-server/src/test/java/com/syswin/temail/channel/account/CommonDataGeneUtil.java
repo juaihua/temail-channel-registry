@@ -1,10 +1,11 @@
 package com.syswin.temail.channel.account;
 
 import com.syswin.temail.channel.account.timer.StatusSyncTimer;
-import java.util.Arrays;
-import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by juaihua on 2018/8/22.

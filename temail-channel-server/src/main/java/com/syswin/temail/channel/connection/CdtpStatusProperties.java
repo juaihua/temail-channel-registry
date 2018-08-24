@@ -2,6 +2,7 @@ package com.syswin.temail.channel.connection;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 姚华成
@@ -9,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "channel")
+@Component
 public class CdtpStatusProperties {
 
   private int serverPort;

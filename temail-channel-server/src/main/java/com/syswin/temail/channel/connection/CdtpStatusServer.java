@@ -6,33 +6,29 @@ import com.syswin.temail.channel.connection.handler.UserStatusHandler;
 import com.syswin.temail.channel.core.codec.StatusRequestDecoder;
 import com.syswin.temail.channel.core.codec.StatusResponseEncoder;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-import java.net.InetSocketAddress;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+
+import java.net.InetSocketAddress;
 
 /**
  * @author 姚华成
  * @date 2018-8-21
  */
 @Slf4j
-@Component
+//@Component
 public class CdtpStatusServer implements ApplicationRunner {
 
-  @Resource
+  @Autowired
   private CdtpStatusProperties properties;
 
   public Channel getChannel() {
@@ -68,7 +64,7 @@ public class CdtpStatusServer implements ApplicationRunner {
       ChannelFuture future = bootstrap.bind().sync();
       future.channel().closeFuture().sync();
     } catch (Exception e) {
-      log.error("状态服务器异常中止！", e);
+      //log.error("状态服务器异常中止！", e);
       System.exit(-1);
     } finally {
       workerGroup.shutdownGracefully();
