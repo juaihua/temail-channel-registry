@@ -7,8 +7,6 @@ import com.syswin.temail.channel.connection.handler.UserStatusHandler;
 import com.syswin.temail.channel.core.codec.StatusRequestDecoder;
 import com.syswin.temail.channel.core.codec.StatusResponseEncoder;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -29,10 +27,11 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class CdtpStatusServer implements ApplicationRunner {
+public class TemailChannelServer implements ApplicationRunner {
 
-  @Resource
-  private CdtpStatusProperties properties;
+  public static final int LENGTH_FIELD_LENGTH = 4;
+  private TemailChannelProperties properties;
+  private ConnectionStatusServiceImpl connectionStatusService;
 
   public TemailChannelServer(TemailChannelProperties properties,
       ConnectionStatusServiceImpl connectionStatusService) {
@@ -73,10 +72,7 @@ public class CdtpStatusServer implements ApplicationRunner {
       // future.channel().closeFuture().sync();
     } catch (Exception e) {
       log.error("状态服务器异常中止！", e);
-      System.exit(-1);
-    } finally {
-      workerGroup.shutdownGracefully();
-      bossGroup.shutdownGracefully();
+      throw e;
     }
   }
 }
