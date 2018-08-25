@@ -23,6 +23,7 @@
 
   <properties>
     <temail-channel-core.version>1.0.0-SNAPSHOT</temail-channel-core.version>
+    <pact.version>3.5.20</pact.version>
   </properties>
 
   <dependencies>
@@ -50,6 +51,42 @@
         <groupId>com.syswin.temail</groupId>
         <artifactId>temail-channel-core</artifactId>
         <version>${temail-channel-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>au.com.dius</groupId>
+        <artifactId>pact-jvm-consumer_2.11</artifactId>
+        <version>${pact.version}</version>
+        <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>au.com.dius</groupId>
+        <artifactId>pact-jvm-consumer-junit_2.11</artifactId>
+        <version>${pact.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>au.com.dius</groupId>
+        <artifactId>pact-jvm-provider_2.11</artifactId>
+        <version>${pact.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>au.com.dius</groupId>
+        <artifactId>pact-jvm-provider-junit_2.11</artifactId>
+        <version>${pact.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>au.com.dius</groupId>
+        <artifactId>pact-jvm-provider-spring_2.11</artifactId>
+        <version>${pact.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

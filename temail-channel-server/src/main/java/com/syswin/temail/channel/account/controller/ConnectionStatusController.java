@@ -1,5 +1,7 @@
 package com.syswin.temail.channel.account.controller;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import com.syswin.temail.channel.account.beans.TemailAccountStatusLocateResponse;
 import com.syswin.temail.channel.account.beans.TemailAccountStatusUpdateRequest;
 import com.syswin.temail.channel.account.beans.TemailAccountStatusUpdateResponse;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,6 +31,15 @@ public class ConnectionStatusController {
   public TemailAccountStatusUpdateResponse updateStatus(
       @RequestBody TemailAccountStatusUpdateRequest temailAccountStatusUpdateRequest) {
     return connectionStatusService.updateStatus(temailAccountStatusUpdateRequest);
+  }
+
+
+  @PostMapping(value = "/locations")
+  @ResponseStatus(CREATED)
+  public Response<String> newConnection(
+      @RequestBody TemailAccountStatusUpdateRequest temailAccountStatusUpdateRequest) {
+    connectionStatusService.updateStatus(temailAccountStatusUpdateRequest);
+    return Response.ok(CREATED, "Success");
   }
 
 
