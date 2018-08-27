@@ -24,6 +24,11 @@ public class ConnectionStatusController {
   @Autowired
   private ConnectionStatusServiceImpl connectionStatusService;
 
+  @RequestMapping(value = "/healthcheck ")
+  public TemailAccountStatusLocateResponse locateStatus() {
+    return ;
+  }
+
   @PostMapping(value = "/updateStatus")
   public TemailAccountStatusUpdateResponse updateStatus(
       @RequestBody TemailAccountStatusUpdateRequest temailAccountStatusUpdateRequest) {

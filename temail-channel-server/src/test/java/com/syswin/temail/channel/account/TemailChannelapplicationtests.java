@@ -1,5 +1,7 @@
 package com.syswin.temail.channel.account;
 
+import java.util.Random;
+
 import com.google.gson.Gson;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.TemailAccountStatus;
@@ -20,8 +22,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Random;
 
 
 @RunWith(SpringRunner.class)
@@ -114,6 +114,9 @@ public class TemailChannelapplicationtests {
         for(TemailAccountStatusUpdateRequest request : RegistAndOfflineDataGeneUtil.temailAccountStatusUpdateRequests){
           connectionStatusService.updateStatus(request);
         }
+
+
+
     }
 
 }
