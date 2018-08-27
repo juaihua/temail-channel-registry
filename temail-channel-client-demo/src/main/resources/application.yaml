@@ -4,5 +4,5 @@ channel:
   client:
     host: 127.0.0.1
     port: 8765
-    write-idle: 10
+    writeIdle: 10
     max-retry-internal: 60

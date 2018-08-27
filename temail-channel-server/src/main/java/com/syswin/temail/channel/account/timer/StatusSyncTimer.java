@@ -61,18 +61,18 @@ public class StatusSyncTimer implements CommandLineRunner {
             CdtpServer offLineServer = (CdtpServer) (redisTemplate.opsForList()
                 .rightPopAndLeftPush(OFFLINE_SERVERS, OFFLINE_SERVERS));
             if (!Optional.ofNullable(offLineServer).isPresent()) {
-              log.debug("there is not any offLine server now, return .");
+              log.info("there is not any offLine server now, return .");
               return;
             }
             if ((RedisOptConstants.calicTimeCap(offLineServer.getCurStateBeginTime()) < offLineServerTTL)) {
-              log.debug("offLine server : {} not reach {} minutes , return .", offLineServer.toString(),
+              log.info("offLine server : {} not reach {} minutes , return .", offLineServer.toString(),
                   (offLineServerTTL / (1000 * 60)));
               return;
             }
             if (!redisTemplate.opsForHash().putIfAbsent(CLEANING_SERVERS, offLineServer.hashKey(), offLineServer)) {
               CdtpServer cleaningServer = (CdtpServer) (redisTemplate.opsForHash()
                   .get(CLEANING_SERVERS, offLineServer.hashKey()));
-              log.debug("the offLine server {} is now being handeled by other scheduled task now, return . ",
+              log.info("the offLine server {} is now being handeled by other scheduled task now, return . ",
                   offLineServer.toString());
               if ((RedisOptConstants.calicTimeCap(cleaningServer.getCurStateBeginTime())) < handleMaxTime) {
                 log.debug("and the time is not reach handleMaxTime {}, so we return . ", (handleMaxTime / (1000 * 60)),
@@ -80,7 +80,7 @@ public class StatusSyncTimer implements CommandLineRunner {
                 return;
               }
             }
-            log.debug("more than {} minutes passed , there seems to be some problems in other server , "
+            log.info("more than {} minutes passed , there seems to be some problems in other server , "
                     + "so now i will continue to handle this offLineserver {}. ", (handleMaxTime / (1000 * 60)),
                 offLineServer.toString());
             CdtpServer optServer = new CdtpServer();
@@ -95,7 +95,7 @@ public class StatusSyncTimer implements CommandLineRunner {
             String keyPrefixPattern =
                 RedisOptConstants.HOST_PREFIX_ON_REDIS + offLineServer.getIp() + "-" + offLineServer.getProcessId()
                     + ":*";
-            log.debug("offLine server keyPrefixPattern is : {}", keyPrefixPattern);
+            log.info("offLine server keyPrefixPattern is : {}", keyPrefixPattern);
             redisTemplate.keys(keyPrefixPattern).stream().forEach(acctkey -> {
               log.debug("remove {} info .", acctkey);
               redisTemplate.opsForHash().keys(acctkey).stream().forEach(chanKey -> {
@@ -110,7 +110,7 @@ public class StatusSyncTimer implements CommandLineRunner {
             //clean invalid hosts channel info
             Set<String> keysInHosts = redisTemplate.keys(keyPrefixPattern);
             redisTemplate.delete(keysInHosts);
-            log.debug("delete {} successfuly",keysInHosts.toString());
+            log.info("delete {} successfuly",keysInHosts.toString());
             log.info("delete client connections from temail:hosts: queue successfuly. ");
 
             //remove cdtpSever from onLineServer and offLineServer

@@ -93,7 +93,6 @@ public class TemailChannelapplicationtests {
         }
     }
 
-
     /**
      * test register and offLine
       */
@@ -111,10 +110,10 @@ public class TemailChannelapplicationtests {
             if(RANDOM.nextDouble() < 0.2 ) connectionStatusService.offLineTheServer(server);
         }
 
-        ///*register connections*/
-        //for(TemailAccountStatusUpdateRequest request : RegistAndOfflineDataGeneUtil.temailAccountStatusUpdateRequests){
-        //  connectionStatusService.updateStatus(request);
-        //}
-
+        /*register connections*/
+        for(TemailAccountStatusUpdateRequest request : RegistAndOfflineDataGeneUtil.temailAccountStatusUpdateRequests){
+          connectionStatusService.updateStatus(request);
+        }
     }
+
 }
