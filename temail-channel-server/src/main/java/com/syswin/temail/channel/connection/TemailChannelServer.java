@@ -1,6 +1,6 @@
 package com.syswin.temail.channel.connection;
 
-import com.syswin.temail.channel.account.service.ConnectionStatusServiceImpl;
+import com.syswin.temail.channel.account.service.TemailAcctStsService;
 import com.syswin.temail.channel.connection.handler.IdleHandler;
 import com.syswin.temail.channel.connection.handler.ServerStatusHandler;
 import com.syswin.temail.channel.connection.handler.UserStatusHandler;
@@ -21,20 +21,16 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-/**
- * @author 姚华成
- * @date 2018-8-21
- */
 @Slf4j
 @Component
 public class TemailChannelServer implements ApplicationRunner {
 
   public static final int LENGTH_FIELD_LENGTH = 4;
   private TemailChannelProperties properties;
-  private ConnectionStatusServiceImpl connectionStatusService;
+  private TemailAcctStsService connectionStatusService;
 
   public TemailChannelServer(TemailChannelProperties properties,
-      ConnectionStatusServiceImpl connectionStatusService) {
+      TemailAcctStsService connectionStatusService) {
     this.properties = properties;
     this.connectionStatusService = connectionStatusService;
   }

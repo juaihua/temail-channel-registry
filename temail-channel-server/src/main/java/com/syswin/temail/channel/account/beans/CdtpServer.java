@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Created by juaihua on 2018/8/20.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -74,4 +71,5 @@ public class CdtpServer {
       this.description = description;
     }
   }
+
 }

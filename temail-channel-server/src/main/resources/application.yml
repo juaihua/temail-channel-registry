@@ -5,8 +5,8 @@ spring:
   profiles:
     active: dev
 channel:
-  server-port: 8765
-  read-idle: 30
+  serverPort: 8765
+  readIdle: 30
 ---
 # dev
 spring:
@@ -24,15 +24,15 @@ spring:
         timeout:  5000
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 30000
+    handleMaxTime: 180000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
 
 channel:
-  serverPort: 9999
-
+  serverPort: 8765
+  readIdle: 30
 ---
 # frontend
 spring:
@@ -50,15 +50,15 @@ spring:
         timeout:  5000
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 30000
+    handleMaxTime: 180000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
 
 channel:
-  serverPort: 9999
-
+  serverPort: 8765
+  readIdle: 30
 ---
 # backend
 spring:
@@ -76,15 +76,15 @@ spring:
         timeout:  5000
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 30000
+    handleMaxTime: 180000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
 
 channel:
-  serverPort: 9999
-
+  serverPort: 8765
+  readIdle: 30
 ---
 # production
 spring:
@@ -103,11 +103,12 @@ spring:
 
 
 statusKeepAlive:
-    offLineServerTTL: 300000
-    handleMaxTime: 6000000
+    offLineServerTTL: 172800000
+    handleMaxTime: 10800000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false
 
 channel:
-  serverPort: 9999
+  serverPort: 8765
+  readIdle: 30

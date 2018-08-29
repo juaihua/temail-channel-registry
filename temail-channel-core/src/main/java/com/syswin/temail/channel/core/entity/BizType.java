@@ -12,7 +12,7 @@ import lombok.Getter;
 public enum BizType {
   HEART_BEAT(0, HeartBeatRequest.class, HeartBeatResponse.class),
   SERVER_STATUS(1, ServerStatusRequest.class, ServerStatusResponse.class),
-  USER_STATUS(2, TemailAccountStatusUpdateRequest.class, TemailAccountStatusUpdateResponse.class);
+  USER_STATUS(2, TemailAcctStsUpdReq.class, TemailAcctStsUpdResp.class);
 
   private final int code;
   private Class<?> requestClass;

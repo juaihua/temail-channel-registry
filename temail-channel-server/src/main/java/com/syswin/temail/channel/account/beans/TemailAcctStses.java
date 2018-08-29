@@ -1,22 +1,18 @@
 package com.syswin.temail.channel.account.beans;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Created by juaihua on 2018/8/14.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TemailAccountStatusLocateResponse {
+public class TemailAcctStses {
 
-  private String account;
-
-  private List<TemailAccountStatus> statusList;
+  private List<TemailAcctSts> statuses;
 
 }

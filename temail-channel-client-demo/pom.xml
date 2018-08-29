@@ -9,7 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>temail-gateway-demo</artifactId>
+  <artifactId>temail-channel-client-demo</artifactId>
   <packaging>jar</packaging>
 
   <properties>

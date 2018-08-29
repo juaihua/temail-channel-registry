@@ -1,10 +1,10 @@
-package com.syswin.temail.channel.account.controller;
-
-import static org.springframework.http.HttpStatus.OK;
+package com.syswin.temail.channel.account.beans;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.http.HttpStatus;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @JsonInclude(Include.NON_NULL)
 public class Response<T> {
@@ -17,11 +17,11 @@ public class Response<T> {
     return new Response<>(OK);
   }
 
-  static <T> Response<T> ok(T body) {
+  public static <T> Response<T> ok(T body) {
     return ok(OK, body);
   }
 
-  static <T> Response<T> ok(HttpStatus status, T body) {
+  public static <T> Response<T> ok(HttpStatus status, T body) {
     return new Response<>(status, null, body);
   }
 

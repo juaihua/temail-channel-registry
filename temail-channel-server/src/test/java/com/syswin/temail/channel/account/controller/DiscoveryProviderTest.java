@@ -1,9 +1,7 @@
 package com.syswin.temail.channel.account.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
-
+import com.syswin.temail.channel.account.beans.ComnRespData;
+import com.syswin.temail.channel.account.service.TemailAcctStsService;
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
 import au.com.dius.pact.provider.junit.loader.PactBroker;
@@ -11,11 +9,13 @@ import au.com.dius.pact.provider.junit.target.HttpTarget;
 import au.com.dius.pact.provider.junit.target.Target;
 import au.com.dius.pact.provider.junit.target.TestTarget;
 import au.com.dius.pact.provider.spring.SpringRestPactRunner;
-import com.syswin.temail.channel.account.beans.TemailAccountStatusUpdateResponse;
-import com.syswin.temail.channel.account.service.ConnectionStatusServiceImpl;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @RunWith(SpringRestPactRunner.class)
 @PactBroker(host = "172.28.50.206", port = "88")
@@ -26,11 +26,16 @@ public class DiscoveryProviderTest {
   public final Target target = new HttpTarget(8081);
 
   @MockBean
-  private ConnectionStatusServiceImpl connectionStatusService;
+  private TemailAcctStsService connectionStatusService;
 
   @State("New connection")
   public void lookupUserBobDoesNotExist() {
-    when(connectionStatusService.updateStatus(any())).thenReturn(new TemailAccountStatusUpdateResponse(true));
+    when(connectionStatusService.addStatus(any())).thenReturn(new ComnRespData(true));
   }
+
+  //TODO 接着写删除和定位的验证！
+
+
+
 
 }

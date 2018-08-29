@@ -1,16 +1,14 @@
 package com.syswin.temail.channel.account.contants;
 
 
-import com.syswin.temail.channel.account.timer.StatusSyncTimer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.syswin.temail.channel.account.timer.StatusSyncTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by juaihua on 2018/8/20.
- */
 public class RedisOptConstants {
 
   public static final SimpleDateFormat YYYY_MM_DD_HH_MM_SS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

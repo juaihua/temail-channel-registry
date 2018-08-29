@@ -11,15 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemailAccountStatusUpdateRequest {
+public class TemailAcctStsUpdReq {
 
   private String account;
 
-  private OptType optype;
+  private TemailAcctSts status;
 
-  private TemailAccountStatus status;
-
-  public enum OptType {
-    add, del
-  }
 }

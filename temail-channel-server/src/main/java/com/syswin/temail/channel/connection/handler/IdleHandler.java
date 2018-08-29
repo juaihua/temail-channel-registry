@@ -1,25 +1,21 @@
 package com.syswin.temail.channel.connection.handler;
 
-import static com.syswin.temail.channel.connection.ChannelHolder.channelMap;
-
 import com.syswin.temail.channel.account.beans.CdtpServer;
-import com.syswin.temail.channel.account.service.ConnectionStatusServiceImpl;
+import com.syswin.temail.channel.account.service.TemailAcctStsService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleUserEventChannelHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * @author 姚华成
- * @date 2018-08-21
- */
+import static com.syswin.temail.channel.connection.ChannelHolder.channelMap;
+
 @Slf4j
 public class IdleHandler extends SimpleUserEventChannelHandler<IdleStateEvent> {
 
-  private ConnectionStatusServiceImpl connectionStatusService;
+  private TemailAcctStsService connectionStatusService;
 
   public IdleHandler(
-      ConnectionStatusServiceImpl connectionStatusService) {
+      TemailAcctStsService connectionStatusService) {
     this.connectionStatusService = connectionStatusService;
   }
 

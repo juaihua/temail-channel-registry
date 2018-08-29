@@ -1,15 +1,12 @@
 package com.syswin.temail.channel.account;
 
-import com.syswin.temail.channel.account.timer.StatusSyncTimer;
 import java.util.Arrays;
 import java.util.Random;
+
+import com.syswin.temail.channel.account.timer.StatusSyncTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by juaihua on 2018/8/22.
- * data gene utils for testing chennels sync
- */
 public class CommonDataGeneUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatusSyncTimer.class);

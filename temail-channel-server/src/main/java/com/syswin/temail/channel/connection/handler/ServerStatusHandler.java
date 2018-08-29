@@ -1,9 +1,7 @@
 package com.syswin.temail.channel.connection.handler;
 
-import static com.syswin.temail.channel.connection.ChannelHolder.channelMap;
-
 import com.syswin.temail.channel.account.beans.CdtpServer;
-import com.syswin.temail.channel.account.service.ConnectionStatusServiceImpl;
+import com.syswin.temail.channel.account.service.TemailAcctStsService;
 import com.syswin.temail.channel.core.entity.ServerStatusRequest;
 import com.syswin.temail.channel.core.entity.StatusRequest;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -11,17 +9,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * @author 姚华成
- * @date 2018-8-21
- */
+import static com.syswin.temail.channel.connection.ChannelHolder.channelMap;
+
 @Slf4j
 @Sharable
 public class ServerStatusHandler extends SimpleChannelInboundHandler<StatusRequest<?>> {
 
-  private ConnectionStatusServiceImpl statusService;
+  private TemailAcctStsService statusService;
 
-  public ServerStatusHandler(ConnectionStatusServiceImpl statusService) {
+  public ServerStatusHandler(TemailAcctStsService statusService) {
     this.statusService = statusService;
   }
 
