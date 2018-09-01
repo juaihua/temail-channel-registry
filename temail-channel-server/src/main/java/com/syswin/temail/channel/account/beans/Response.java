@@ -17,6 +17,10 @@ public class Response<T> {
     return new Response<>(OK);
   }
 
+  public static <T> Response<T> ok(HttpStatus status) {
+    return ok(status, null);
+  }
+
   public static <T> Response<T> ok(T body) {
     return ok(OK, body);
   }

@@ -1,20 +1,28 @@
 package com.syswin.temail.channel.account.service;
 
 
-import java.util.*;
-import java.util.function.Consumer;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_PREFIX_ON_REDIS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
 
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.ComnRespData;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.contants.RedisOptConstants;
+import com.syswin.temail.channel.exceptions.TemailDiscoveryException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.*;
 
 @Slf4j
 @Component
@@ -27,7 +35,7 @@ public class TemailAcctStsService {
   /**
    * persistent channels into redis
    */
-  public ComnRespData addStatus(TemailAcctStses temailAcctStses) {
+  public void addStatus(TemailAcctStses temailAcctStses) {
     try {
       temailAcctStses.getStatuses().forEach(status -> {
         String temailChannelHashKey = status.geneHashKey();
@@ -40,10 +48,8 @@ public class TemailAcctStsService {
           .append(status.getAccount()).toString();
         redisTemplate.opsForHash().put(hstKey, temailChannelHashKey, status);
       });
-      return new ComnRespData(true);
     } catch (Exception e) {
-      log.error("error in update channel status..", e);
-      return new ComnRespData(false);
+      throw new TemailDiscoveryException("Failed to update gateway location with " + temailAcctStses, e);
     }
   }
 
@@ -51,7 +57,7 @@ public class TemailAcctStsService {
    /**
    * delete channels into redis
    */
-  public ComnRespData delStatus(TemailAcctStses temailAcctStses) {
+  public void delStatus(TemailAcctStses temailAcctStses) {
     try {
       temailAcctStses.getStatuses().stream().forEach(status -> {
         String temailChannelHashKey = status.geneHashKey();
@@ -63,10 +69,8 @@ public class TemailAcctStsService {
           .append(status.getAccount()).toString();
         redisTemplate.opsForHash().delete(hstKey, temailChannelHashKey);
       });
-      return new ComnRespData(true);
     } catch (Exception e) {
-      log.error("error in update channel status..", e);
-      return new ComnRespData(false);
+      throw new TemailDiscoveryException("Failed to update gateway location with " + temailAcctStses, e);
     }
   }
 

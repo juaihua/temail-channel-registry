@@ -22,26 +22,26 @@ public class TemailAcctStsController {
   @ResponseStatus(CREATED)
   public Response addStatus(
       @RequestBody TemailAcctStses temailAcctStses) {
-    ComnRespData resp = connectionStatusService.addStatus(temailAcctStses);
-    log.debug("add location: {}",resp.toString());
-    return Response.ok(CREATED,resp);
+    connectionStatusService.addStatus(temailAcctStses);
+    log.debug("added location: {}", temailAcctStses);
+    return Response.ok(CREATED);
   }
 
-  @DeleteMapping(value = "/locations")
+  @PutMapping(value = "/locations")
   @ResponseStatus(OK)
   public Response delStatus(
       @RequestBody TemailAcctStses temailAcctStses) {
-    ComnRespData resp = connectionStatusService.delStatus(temailAcctStses);
-    log.debug("remove location: {}",resp.toString());
-    return Response.ok(OK,resp);
+    connectionStatusService.delStatus(temailAcctStses);
+    log.debug("remove location: {}", temailAcctStses);
+    return Response.ok();
   }
 
   @GetMapping(value = "/locations/{account}")
   @ResponseStatus(OK)
   public Response locateStatus(@PathVariable String account) {
     TemailAcctStses resp = connectionStatusService.locateStatus(account);
-    log.debug("locate location: {}",resp.toString());
-    return Response.ok(OK,resp);
+    log.debug("locate location: {}", resp.toString());
+    return Response.ok(OK, resp);
   }
 
 }
