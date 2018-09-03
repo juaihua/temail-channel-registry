@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
-<!-- status log4j2内部日志级别 -->
-<configuration status="INFO">
-    <!-- 全局参数 -->
-    <Properties>
-        <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}:%L -%m%n</Property>
-        <Property name="displayName">EurekaServer</Property>
-    </Properties>
-    <Appenders>
-        <Console name="console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout>
-                <pattern>${pattern}</pattern>
-            </PatternLayout>
-        </Console>
-        <!-- 文件 每次运行程序会自动清空，由append属性决定 -->
-        <File name="error" fileName="${displayName}_error.log" append="false">
-            <!-- 指定error 级别的日志 -->
-            <ThresholdFilter level="ERROR" onMatch="ACCEPT"
-                onMismatch="DENY" />
-            <PatternLayout>
-                <pattern>${pattern}</pattern>
-            </PatternLayout>
-        </File>
-        <!-- 滚动文件 -->
-        <RollingFile name="rollingFile" fileName="${displayName}.log"
-            filePattern="${displayName}_%d{yyyy-MM-dd}.log">
-            <PatternLayout>
-                <pattern>${pattern}</pattern>
-            </PatternLayout>
-            <!-- 按大小划分 -->
-            <SizeBasedTriggeringPolicy size="50 MB" />
-        </RollingFile>
-    </Appenders>
-    <Loggers>
-        <!-- <Logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"
-            /> <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"
-            /> <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"
-            /> -->
-        <Logger name="org.springframework" level="WARN" />
-        <Logger name="com.xuweihao" level="DEBUG" />
-        <Root level="INFO">
-            <AppenderRef ref="console"></AppenderRef>
-            <AppenderRef ref="error"></AppenderRef>
-            <AppenderRef ref="rollingFile"></AppenderRef>
-        </Root>
-    </Loggers>
+<configuration status="WARN">
+  <properties>
+    <property name="LOG_HOME">${env:log.path.prefix}</property>
+    <property name="LOG_INFO_NAME">/app_log.log</property>
+    <property name="BACKUP_INFO_NAME">app-%d{MM-dd-yyyy}-%i.log</property>
+    <property name="LOG_ERROR_NAME">/err.log</property>
+    <property name="BACKUP_ERROR_NAME">app-err-%d{MM-dd-yyyy}-%i.log</property>
+  </properties>
+  <appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%p][%date{yyyy-MM-dd HH:mm:ss.SSS}]%msg[%thread]([%c:%line])%n"/>
+    </Console>
+    <RollingFile name="AllLog" fileName="${LOG_HOME}/${LOG_INFO_NAME}" filePattern="${LOG_HOME}/${BACKUP_INFO_NAME}">
+      <PatternLayout pattern="[%p][%date{yyyy-MM-dd HH:mm:ss.SSS}]%msg[%thread]([%c:%line])%n"/>
+      <SizeBasedTriggeringPolicy size="50MB"/>
+    </RollingFile>
+    <RollingFile name="ErrLog" fileName="${LOG_HOME}/${LOG_ERROR_NAME}" filePattern="${LOG_HOME}/${BACKUP_ERROR_NAME}">
+      <Filters>
+        <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
+      <PatternLayout pattern="[%p][%date{yyyy-MM-dd HH:mm:ss.SSS}]%msg[%thread]([%c:%line])%n"/>
+      <SizeBasedTriggeringPolicy size="50MB"/>
+    </RollingFile>
+  </appenders>
+  <Loggers>
+      <logger name="org.apache" level="ERROR" additivity="false"/>
+      <logger name="org.springframework" level="ERROR" additivity="false"/>
+      <logger name="com.mchange" level="ERROR" additivity="false"/>
+      <logger name="org.apache.commons" level="ERROR" additivity="false"/>
+    <root level="info">
+      <appenderRef ref="AllLog"/>
+      <appenderRef ref="ErrLog"/>
+    </root>
+  </Loggers>
 </configuration>

@@ -1,28 +1,30 @@
 package com.syswin.temail.channel.account.service;
 
 
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_PREFIX_ON_REDIS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
-
-import com.syswin.temail.channel.account.beans.CdtpServer;
-import com.syswin.temail.channel.account.beans.ComnRespData;
-import com.syswin.temail.channel.account.beans.TemailAcctSts;
-import com.syswin.temail.channel.account.beans.TemailAcctStses;
-import com.syswin.temail.channel.account.contants.RedisOptConstants;
-import com.syswin.temail.channel.exceptions.TemailDiscoveryException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import com.google.gson.Gson;
+import com.syswin.temail.channel.account.beans.CdtpServer;
+import com.syswin.temail.channel.account.beans.ComnRespData;
+import com.syswin.temail.channel.account.beans.TemailAcctSts;
+import com.syswin.temail.channel.account.beans.TemailAcctStses;
+import com.syswin.temail.channel.account.contants.RedisOptConstants;
+import com.syswin.temail.channel.exceptions.TemailDiscoveryException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_PREFIX_ON_REDIS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
 
 @Slf4j
 @Component
@@ -31,6 +33,7 @@ public class TemailAcctStsService {
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
 
+  private static final Gson GSON = new Gson();
 
   /**
    * persistent channels into redis
@@ -47,8 +50,10 @@ public class TemailAcctStsService {
           .append(status.getProcessId()).append(":")
           .append(status.getAccount()).toString();
         redisTemplate.opsForHash().put(hstKey, temailChannelHashKey, status);
+        log.debug("add Statuses service response: {}", GSON.toJson(temailAcctStses));
       });
     } catch (Exception e) {
+      log.error("add status fail : {}", GSON.toJson(temailAcctStses));
       throw new TemailDiscoveryException("Failed to update gateway location with " + temailAcctStses, e);
     }
   }
@@ -68,8 +73,10 @@ public class TemailAcctStsService {
           .append(status.getProcessId()).append(":")
           .append(status.getAccount()).toString();
         redisTemplate.opsForHash().delete(hstKey, temailChannelHashKey);
+        log.debug("delete Statuses service response: {}", GSON.toJson(temailAcctStses));
       });
     } catch (Exception e) {
+      log.error("delete status fail : {}", GSON.toJson(temailAcctStses));
       throw new TemailDiscoveryException("Failed to update gateway location with " + temailAcctStses, e);
     }
   }
@@ -90,8 +97,9 @@ public class TemailAcctStsService {
         }
       });
       result.setStatuses(statusList);
+      log.debug("locate Statuses service response: {}", GSON.toJson(statusList));
     } catch (Exception e) {
-      log.error("redis locate fail.", e);
+      log.error("locate status fail", temailAccount);
       e.printStackTrace();
     }
     return result;
@@ -107,14 +115,19 @@ public class TemailAcctStsService {
           .orElse(false)) {
         return new ComnRespData("the cdtpServer is cleaning now, no allowed to register", false);
       }
+
+      // if parameter server instance alerady in offLine servers that means the cdtp-server reconnect in the ttl time
+      // this condition may be caused by network error or one cdpt-status server error, so the cdtp-server try to reconnect!
       redisTemplate.opsForList().range(OFFLINE_SERVERS, 0, -1).stream()
           .filter(c1 -> ((CdtpServer) c1).getIp().equals(cdtpServer.getIp()) && ((CdtpServer) c1).getProcessId()
               .equals(cdtpServer.getProcessId()))
-          .forEach(c2 -> redisTemplate.opsForList().remove(OFFLINE_SERVERS, 0L, c2));
+          .forEach(c2 -> {
+             redisTemplate.opsForList().remove(OFFLINE_SERVERS, 0L, c2);
+          });
       cdtpServer.setCdtpServerState(CdtpServer.CdtpServerState.onLine);
       cdtpServer.setCurStateBeginTime(RedisOptConstants.format(new Date()));
       redisTemplate.opsForHash().put(ONLINE_SERVERS, cdtpServer.hashKey(), cdtpServer);
-      log.debug("register successfully : {} ",cdtpServer.toString());
+      log.info("register successfully : {} ",cdtpServer.toString());
       return new ComnRespData("register successfully.. ", true);
     } catch (Exception e) {
       log.error("register fail... ",e.getMessage());
@@ -128,6 +141,7 @@ public class TemailAcctStsService {
    */
   public ComnRespData offLineTheServer(CdtpServer cdtpServer) {
     try {
+      // we offLine a server based on the lateset request
       (redisTemplate.opsForList().range(OFFLINE_SERVERS, 0, -1)).stream()
           .filter(c1 -> ((CdtpServer) c1).getIp().equals(cdtpServer.getIp()) && ((CdtpServer) c1).getProcessId()
               .equals(cdtpServer.getProcessId()))
@@ -138,7 +152,7 @@ public class TemailAcctStsService {
       cdtpServer.setCurStateBeginTime(RedisOptConstants.format(new Date()));
       redisTemplate.opsForList().rightPush(OFFLINE_SERVERS, cdtpServer);
       redisTemplate.opsForHash().put(ONLINE_SERVERS, cdtpServer.hashKey(), cdtpServer);
-      log.debug("offLine the server success : {}", cdtpServer.toString());
+      log.info("offLine the server success : {}", cdtpServer.toString());
       return new ComnRespData("offLine the server successfully...", true);
     } catch (Exception e) {
       log.error("offLine the server fail...", e);
