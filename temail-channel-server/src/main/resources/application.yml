@@ -103,8 +103,8 @@ spring:
 
 
 statusKeepAlive:
-    offLineServerTTL: 172800000
-    handleMaxTime: 10800000
+    offLineServerTTL: 60000
+    handleMaxTime: 180000
     taskDelay: 60
     initDelay: 60
     taskBuffer: false

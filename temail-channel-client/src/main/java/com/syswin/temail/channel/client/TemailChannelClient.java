@@ -17,6 +17,8 @@ import org.springframework.beans.factory.InitializingBean;
 @Slf4j
 public class TemailChannelClient implements InitializingBean {
 
+  private static final String INSTANCE_UNIQUE_TAG_4_HEARTBEAT = "_instance_unique_tag_4_heart_beat_$";
+
   private ChannelManager channelManager;
 
   public TemailChannelClient(ChannelManager channelManager) {
@@ -40,7 +42,8 @@ public class TemailChannelClient implements InitializingBean {
   public void afterPropertiesSet() {
     ServerStatusRequest request = new ServerStatusRequest();
     request.setIp(LocalMachineUtil.getLocalIp());
-    request.setProcessId(LocalMachineUtil.getLocalProccesId());
+    String uniqueTagVal = System.getProperty(INSTANCE_UNIQUE_TAG_4_HEARTBEAT);
+    request.setProcessId(uniqueTagVal);
     updateServerStatus(request);
   }
 }
