@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>temail-channel-core</module>
+    <module>temail-channel-common</module>
     <module>temail-channel-client</module>
     <module>temail-channel-server</module>
     <module>temail-channel-client-demo</module>

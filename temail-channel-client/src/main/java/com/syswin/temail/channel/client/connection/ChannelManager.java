@@ -74,7 +74,7 @@ public class ChannelManager {
         }
       });
 
-      future = bootstrap.connect(properties.getHost(), properties.getPort()).sync();
+      future = bootstrap.connect(properties.getServerHost(), properties.getServerPort()).sync();
     }
     // 以下代码在synchronized同步块外面是安全的
     setChannel(future.channel());

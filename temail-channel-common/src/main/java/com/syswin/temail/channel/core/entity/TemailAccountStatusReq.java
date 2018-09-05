@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemailAcctStsUpdReq {
+public class TemailAccountStatusReq {
 
   private String account;
 
-  private TemailAcctSts status;
+  private TemailAccountStatus status;
 
 }

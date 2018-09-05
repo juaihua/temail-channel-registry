@@ -5,8 +5,8 @@ import com.syswin.temail.channel.client.connection.LocalMachineUtil;
 import com.syswin.temail.channel.core.entity.BizType;
 import com.syswin.temail.channel.core.entity.ServerStatusRequest;
 import com.syswin.temail.channel.core.entity.StatusRequest;
-import com.syswin.temail.channel.core.entity.TemailAcctStsUpdReq;
-import com.syswin.temail.channel.core.entity.TemailAcctStsUpdResp;
+import com.syswin.temail.channel.core.entity.TemailAccountStatusReq;
+import com.syswin.temail.channel.core.entity.TemailAccountStatusResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -25,8 +25,8 @@ public class TemailChannelClient implements InitializingBean {
     this.channelManager = channelManager;
   }
 
-  public TemailAcctStsUpdResp updateAccountStatus(
-      TemailAcctStsUpdReq temailAccountStatusUpdateRequest) {
+  public TemailAccountStatusResp updateAccountStatus(
+      TemailAccountStatusReq temailAccountStatusUpdateRequest) {
     // 由于并发请求数量可能比较多，需要进行连接池管理
     // 由于需要等待服务器的返回值，需要对连接进行同步化处理。
     throw new UnsupportedOperationException("当前还不支持这个方法，请使用原来的方法更新用户状态！");

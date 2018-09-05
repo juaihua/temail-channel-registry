@@ -77,7 +77,7 @@ public abstract class ConnectionWatchdog extends ChannelInboundHandlerAdapter im
           ch.pipeline().addLast(handlers());
         }
       });
-      future = bootstrap.connect(properties.getHost(), properties.getPort()).sync();
+      future = bootstrap.connect(properties.getServerHost(), properties.getServerPort()).sync();
       channelManager.setChannel(future.channel());
     }
 
