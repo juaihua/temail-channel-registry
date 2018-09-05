@@ -31,4 +31,10 @@ public class TemailAcctSts {
         .append(this.processId).append("-").append(mqTopic).append("-").append(mqTag).toString();*/
   }
 
+  //
+  public String dispathUniqueKey() {
+    return new StringBuilder(this.account).append("|")
+        .append(mqTopic).append("|").append(mqTag).toString();
+  }
+
 }

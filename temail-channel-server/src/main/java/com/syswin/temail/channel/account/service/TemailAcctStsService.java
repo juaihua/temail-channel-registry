@@ -1,13 +1,6 @@
 package com.syswin.temail.channel.account.service;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
-
 import com.google.gson.Gson;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.ComnRespData;
@@ -15,6 +8,12 @@ import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.contants.RedisOptConstants;
 import com.syswin.temail.channel.exceptions.TemailDiscoveryException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -86,18 +85,22 @@ public class TemailAcctStsService {
    * obtain channels info
    */
   public TemailAcctStses locateStatus(String temailAccount) {
+    Map<String,TemailAcctSts> tmpRes = new HashMap<String,TemailAcctSts>();
     TemailAcctStses result = new TemailAcctStses();
     try {
-      List<TemailAcctSts> statusList = new ArrayList<TemailAcctSts>();
       Map<Object, Object> statusHash = redisTemplate.opsForHash().entries(TEMAIL_PREFIX_ON_REDIS + temailAccount);
       Optional.ofNullable(statusHash).ifPresent(new Consumer<Map>() {
         @Override
         public void accept(Map map) {
-          map.forEach((k, v) -> statusList.add((TemailAcctSts) v));
+          map.forEach((k, v) ->{
+            TemailAcctSts tmp = ((TemailAcctSts) v);
+            tmpRes.put(tmp.dispathUniqueKey(),tmp);
+          });
         }
       });
-      result.setStatuses(statusList);
-      log.debug("locate Statuses service response: {}", GSON.toJson(statusList));
+
+      result.setStatuses(new ArrayList(tmpRes.values()));
+      log.debug("locate Statuses service response: {}", GSON.toJson(result));
     } catch (Exception e) {
       log.error("locate status fail", temailAccount);
       e.printStackTrace();
