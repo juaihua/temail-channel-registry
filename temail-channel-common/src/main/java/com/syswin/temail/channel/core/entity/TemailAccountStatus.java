@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TemailAcctSts {
+public class TemailAccountStatus {
 
   private String devId;
   private String hostOf;

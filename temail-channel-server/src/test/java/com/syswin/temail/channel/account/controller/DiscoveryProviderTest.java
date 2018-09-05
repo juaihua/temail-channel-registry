@@ -24,7 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @RunWith(SpringRestPactRunner.class)
 @PactBroker(host = "172.28.50.206", port = "88")
 @Provider("temail-discovery")
-@SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=8081")
+@SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.serverPort=8081")
 public class DiscoveryProviderTest {
   @TestTarget
   public final Target target = new HttpTarget(8081);

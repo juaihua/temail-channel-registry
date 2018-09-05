@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>temail-channel-core</artifactId>
+  <artifactId>temail-channel-common</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
