@@ -12,14 +12,14 @@
   <packaging>jar</packaging>
 
   <properties>
-    <temail-channel-core.version>1.0.0-SNAPSHOT</temail-channel-core.version>
+    <temail-channel-common.version>1.0.0-SNAPSHOT</temail-channel-common.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.syswin.temail</groupId>
-      <artifactId>temail-channel-core</artifactId>
-      <version>${temail-channel-core.version}</version>
+      <artifactId>temail-channel-common</artifactId>
+      <version>${temail-channel-common.version}</version>
     </dependency>
 
     <dependency>
