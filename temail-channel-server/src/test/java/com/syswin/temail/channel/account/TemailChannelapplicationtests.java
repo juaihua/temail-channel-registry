@@ -107,7 +107,7 @@ public class TemailChannelapplicationtests {
             TemailAcctSts("temailStatusTestaAcct@temail.com",
             "TestDevId-1", "192.168.197.38", "9812", "mqTopci", "mqTag"));
       }});
-      MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/locations")
+      MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/locations")
           .contentType("application/json;charset=utf-8")
           .content(new Gson().toJson(request)))
           .andExpect(MockMvcResultMatchers.status().isOk())
