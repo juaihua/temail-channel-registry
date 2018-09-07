@@ -25,7 +25,7 @@ public class HeartBeatClientHandler extends SimpleUserEventChannelHandler<IdleSt
   protected void eventReceived(ChannelHandlerContext ctx, IdleStateEvent evt) {
     IdleState state = evt.state();
     if (state == IdleState.WRITER_IDLE) {
-      log.info("发送心跳信息！");
+      log.debug("发送心跳信息！");
       ctx.channel().writeAndFlush(HEARTBEAT);
     }
   }
