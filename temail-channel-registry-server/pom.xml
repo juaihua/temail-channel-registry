@@ -84,22 +84,96 @@
       <groupId>au.com.dius</groupId>
       <artifactId>pact-jvm-provider-spring_2.11</artifactId>
     </dependency>
+      <dependency>
+      <groupId>com.systoon.integration</groupId>
+      <artifactId> disconf-spring-boot-starter</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.baidu.disconf</groupId>
+      <artifactId>disconf-client</artifactId>
+      <version>2.6.36</version>
+      <exclusions>
+        <exclusion>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.9-RC1</version>
+  </dependency>
+
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.8.RELEASE</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
+  <plugins>
+    <plugin>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      <configuration>
+        <mainClass>com.syswin.temail.channel.TemailChannelApplication</mainClass>
+        <layout>ZIP</layout>
+        <executable>true</executable>
+        <!--<includes>
+          <include>
+            <groupId>com.syswin.temail</groupId>
+            <artifactId>usermail-common</artifactId>
+          </include>
+          <include>
+            <groupId>com.syswin.temail</groupId>
+            <artifactId>usermail-core</artifactId>
+          </include>
+          <include>
+            <groupId>com.syswin.temail</groupId>
+            <artifactId>usermail-redis</artifactId>
+          </include>
+          <include>
+            <groupId>com.syswin.temail</groupId>
+            <artifactId>usermail-mq-impl</artifactId>
+          </include>
+        </includes>-->
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>repackage</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>2.4</version>
+      <configuration>
+        <excludes>
+          <exclude>**/application.properties</exclude>
+        </excludes>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-dependency-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>copy</id>
+          <phase>package</phase>
+          <goals>
+            <goal>copy-dependencies</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+            <excludeGroupIds>com.syswin.temail</excludeGroupIds>
+            <includeScope>compile</includeScope>
+            <includeScope>runtime</includeScope>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
 
 </project>
