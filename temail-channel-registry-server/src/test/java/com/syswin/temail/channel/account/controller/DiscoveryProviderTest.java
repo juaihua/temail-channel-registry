@@ -24,10 +24,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @RunWith(SpringRestPactRunner.class)
 @PactBroker(host = "172.28.50.206", port = "88")
 @Provider("temail-discovery")
-@SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=8081")
+@SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=9100")
 public class DiscoveryProviderTest {
   @TestTarget
-  public final Target target = new HttpTarget(8081);
+  public final Target target = new HttpTarget(9100);
   private final String sean = "sean@t.email";
   private final String jack = "jack@t.email";
 
