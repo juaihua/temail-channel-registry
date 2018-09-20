@@ -2,14 +2,12 @@ package com.syswin.temail.channel.account;
 
 import java.util.Arrays;
 import java.util.Random;
-
-import com.syswin.temail.channel.account.timer.StatusSyncTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CommonDataGeneUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StatusSyncTimer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonDataGeneUtil.class);
 
     private static final Random RANDOM = new Random(1);
 
@@ -22,7 +20,6 @@ public class CommonDataGeneUtil {
     public static enum ExtractType{UPPER,LOWER,NUM};
 
     static {
-
         for(int i = 0; i < 26; i++){
             UPPER_CASE[i] = (char)((int)'A' + i);
             LOWER_CASE[i] = (char)((int)'a' + i);
@@ -59,6 +56,13 @@ public class CommonDataGeneUtil {
             }
         }
         return sbd.toString();
+    }
+
+    public static String extractIp(){
+        return new StringBuilder(extractChar(ExtractType.NUM,2)).append(".")
+            .append(extractChar(ExtractType.NUM,2)).append(".")
+            .append(extractChar(ExtractType.NUM,2)).append(".")
+            .append(extractChar(ExtractType.NUM,2)).toString();
     }
 
 }

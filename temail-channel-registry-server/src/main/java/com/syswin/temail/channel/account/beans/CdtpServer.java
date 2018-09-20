@@ -15,7 +15,6 @@ public class CdtpServer {
 
   private String processId;
 
-  //time cdtpserver instance offLine
   private String curStateBeginTime;
 
   private CdtpServerState cdtpServerState;

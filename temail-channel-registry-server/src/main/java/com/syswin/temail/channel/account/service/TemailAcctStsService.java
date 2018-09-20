@@ -45,9 +45,9 @@ public class TemailAcctStsService {
         redisTemplate.opsForHash().put(acctKey, temailChannelHashKey, status);
 
         String hstKey = new StringBuffer(HOST_PREFIX_ON_REDIS)
-          .append(status.getHostOf()).append("-")
-          .append(status.getProcessId()).append(":")
-          .append(status.getAccount()).toString();
+            .append(status.getHostOf()).append("-")
+            .append(status.getProcessId()).append(":")
+            .append(status.getAccount()).toString();
         redisTemplate.opsForHash().put(hstKey, temailChannelHashKey, status);
         log.debug("add Statuses service response: {}", GSON.toJson(temailAcctStses));
       });
@@ -58,7 +58,7 @@ public class TemailAcctStsService {
   }
 
 
-   /**
+  /**
    * delete channels into redis
    */
   public void delStatus(TemailAcctStses temailAcctStses) {
@@ -68,15 +68,15 @@ public class TemailAcctStsService {
         String acctKey = new StringBuilder(TEMAIL_PREFIX_ON_REDIS).append(status.getAccount()).toString();
         redisTemplate.opsForHash().delete(acctKey, temailChannelHashKey);
         String hstKey = new StringBuffer(HOST_PREFIX_ON_REDIS)
-          .append(status.getHostOf()).append("-")
-          .append(status.getProcessId()).append(":")
-          .append(status.getAccount()).toString();
+            .append(status.getHostOf()).append("-")
+            .append(status.getProcessId()).append(":")
+            .append(status.getAccount()).toString();
         redisTemplate.opsForHash().delete(hstKey, temailChannelHashKey);
-        log.debug("delete Statuses service response: {}", GSON.toJson(temailAcctStses));
+        log.debug("delete statuses : {} successfully ", GSON.toJson(temailAcctStses));
       });
     } catch (Exception e) {
       log.error("delete status fail : {}", GSON.toJson(temailAcctStses));
-      throw new TemailDiscoveryException("Failed to update gateway location with " + temailAcctStses, e);
+      throw new TemailDiscoveryException("failed to update gateway location with " + temailAcctStses, e);
     }
   }
 
@@ -85,25 +85,25 @@ public class TemailAcctStsService {
    * obtain channels info
    */
   public TemailAcctStses locateStatus(String temailAccount) {
-    Map<String,TemailAcctSts> tmpRes = new HashMap<String,TemailAcctSts>();
+    Map<String, TemailAcctSts> tmpRes = new HashMap<String, TemailAcctSts>();
     TemailAcctStses result = new TemailAcctStses();
     try {
       Map<Object, Object> statusHash = redisTemplate.opsForHash().entries(TEMAIL_PREFIX_ON_REDIS + temailAccount);
       Optional.ofNullable(statusHash).ifPresent(new Consumer<Map>() {
         @Override
         public void accept(Map map) {
-          map.forEach((k, v) ->{
+          map.forEach((k, v) -> {
             TemailAcctSts tmp = ((TemailAcctSts) v);
-            tmpRes.put(tmp.dispathUniqueKey(),tmp);
+            tmpRes.put(tmp.dispathUniqueKey(), tmp);
           });
         }
       });
 
       result.setStatuses(new ArrayList(tmpRes.values()));
-      log.debug("locate Statuses service response: {}", GSON.toJson(result));
+      log.debug("locate statuses account: {} , response: {}", temailAccount, GSON.toJson(result));
     } catch (Exception e) {
       log.error("locate status fail", temailAccount);
-      throw new TemailDiscoveryException("Failed to locate gateway location with " + temailAccount, e);
+      throw new TemailDiscoveryException("failed to locate gateway location with " + temailAccount, e);
     }
     return result;
   }
@@ -112,30 +112,22 @@ public class TemailAcctStsService {
   /**
    * allow a cdtp server to register or recorvery the state to onLine
    */
-  public ComnRespData registerOrRecorveryServer(CdtpServer cdtpServer) {
-    try {
-      if (Optional.ofNullable(redisTemplate.opsForHash().hasKey(CLEANING_SERVERS, cdtpServer.hashKey()))
-          .orElse(false)) {
-        return new ComnRespData("the cdtpServer is cleaning now, no allowed to register", false);
-      }
-
-      // if parameter server instance alerady in offLine servers that means the cdtp-server reconnect in the ttl time
-      // this condition may be caused by network error or one cdpt-status server error, so the cdtp-server try to reconnect!
-      redisTemplate.opsForList().range(OFFLINE_SERVERS, 0, -1).stream()
-          .filter(c1 -> ((CdtpServer) c1).getIp().equals(cdtpServer.getIp()) && ((CdtpServer) c1).getProcessId()
-              .equals(cdtpServer.getProcessId()))
-          .forEach(c2 -> {
-             redisTemplate.opsForList().remove(OFFLINE_SERVERS, 0L, c2);
-          });
-      cdtpServer.setCdtpServerState(CdtpServer.CdtpServerState.onLine);
-      cdtpServer.setCurStateBeginTime(RedisOptConstants.format(new Date()));
-      redisTemplate.opsForHash().put(ONLINE_SERVERS, cdtpServer.hashKey(), cdtpServer);
-      log.info("register successfully : {} ",cdtpServer.toString());
-      return new ComnRespData("register successfully.. ", true);
-    } catch (Exception e) {
-      log.error("register fail... ",e.getMessage());
-      return new ComnRespData("redis operate fail..", false);
+  public void registerOrRecorveryServer(CdtpServer cdtpServer) {
+    if (Optional.ofNullable(redisTemplate.opsForHash().hasKey(CLEANING_SERVERS, cdtpServer.hashKey())).orElse(false)) {
+      throw new IllegalStateException("the cdtpServer is cleaning now, no allowed to register");
     }
+    // if parameter server instance alerady in offLine servers that means the cdtp-server reconnect in the ttl time
+    // this condition may be caused by network error or one cdpt-status server error, so the cdtp-server try to reconnect!
+    redisTemplate.opsForList().range(OFFLINE_SERVERS, 0, -1).stream()
+        .filter(c1 -> ((CdtpServer) c1).getIp().equals(cdtpServer.getIp()) && ((CdtpServer) c1).getProcessId()
+            .equals(cdtpServer.getProcessId()))
+        .forEach(c2 -> {
+          redisTemplate.opsForList().remove(OFFLINE_SERVERS, 0L, c2);
+        });
+    cdtpServer.setCdtpServerState(CdtpServer.CdtpServerState.onLine);
+    cdtpServer.setCurStateBeginTime(RedisOptConstants.format(new Date()));
+    redisTemplate.opsForHash().put(ONLINE_SERVERS, cdtpServer.hashKey(), cdtpServer);
+    log.info("register successfully : {} ", cdtpServer.toString());
   }
 
 
