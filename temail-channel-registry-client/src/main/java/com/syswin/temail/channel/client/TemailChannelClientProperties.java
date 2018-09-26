@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "channel.client")
 public class TemailChannelClientProperties {
 
-  private String serverHost = "temail-channel";
+  private String serverHost = "channel.innermail.com";
   private int serverPort = 8765;
   private int writeIdle = 10;
   private int maxRetryInternal = 60;
