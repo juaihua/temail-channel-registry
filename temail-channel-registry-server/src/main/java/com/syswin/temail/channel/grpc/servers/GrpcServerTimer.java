@@ -29,7 +29,7 @@ public class GrpcServerTimer {
     this.temailAcctStsService = temailAcctStsService;
   }
 
-  public String extractHashKey(GatewayServer gatewayServer) {
+  private String extractHashKey(GatewayServer gatewayServer) {
     return gatewayServer.getIp() + "-" + gatewayServer.getProcessId();
   }
 

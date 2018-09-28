@@ -11,13 +11,11 @@ public class GrpcServerStarter {
 
   private Server server;
 
-  private TemailAcctStsService temailAcctStsService;
+  private final TemailAcctStsService temailAcctStsService;
 
-  private int port;
+  private final int port;
 
-  public GrpcServerStarter(){}
-
-  public GrpcServerStarter(TemailAcctStsService temailAcctStsService, int port){
+  public GrpcServerStarter(TemailAcctStsService temailAcctStsService, int port) {
     this.port = port;
     this.temailAcctStsService = temailAcctStsService;
   }
@@ -27,8 +25,10 @@ public class GrpcServerStarter {
    */
   public void start() throws IOException {
     //start grpc server and add a hook to clean resources when jvm close;
-    server = ServerBuilder.forPort(port).addService(new
-        GrpcServerImpl(temailAcctStsService)).build().start();
+    server = ServerBuilder.forPort(port)
+        .addService(new GrpcLocationsSyncImpl(temailAcctStsService))
+        .addService(new GrpcLocationsQueryImpl(temailAcctStsService))
+        .build().start();
     log.info("grpc server start successfully.");
     Runtime.getRuntime().addShutdownHook(new Thread() {
       @Override
