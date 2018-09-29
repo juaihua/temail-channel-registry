@@ -34,6 +34,7 @@ public class TemailAcctStsService {
 
   private static final Gson GSON = new Gson();
 
+
   /**
    * persistent channels into redis
    */
@@ -156,4 +157,16 @@ public class TemailAcctStsService {
   }
 
 
+  /**
+   * if server is in offLine state, reset to onLine
+   *
+   * @param cdtpServer
+   */
+  public void fixPotentialMiskakeOffLine(CdtpServer cdtpServer) {
+    Object o = redisTemplate.opsForHash().get(ONLINE_SERVERS, cdtpServer.hashKey());
+    if (o == null || ((CdtpServer) o).getCdtpServerState()
+        .equals(CdtpServer.CdtpServerState.offLine)) {
+      this.registerOrRecorveryServer(cdtpServer);
+    }
+  }
 }

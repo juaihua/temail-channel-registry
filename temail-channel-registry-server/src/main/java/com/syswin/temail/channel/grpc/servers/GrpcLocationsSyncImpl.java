@@ -101,7 +101,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
    * @param responseObserver
    */
   @Override
-  public void serverHeartBeat(GatewayServer gatewayServer,
+        public void serverHeartBeat(GatewayServer gatewayServer,
       StreamObserver<CommonResponse> responseObserver) {
     CommonResponse commonResponse = null;
     try {

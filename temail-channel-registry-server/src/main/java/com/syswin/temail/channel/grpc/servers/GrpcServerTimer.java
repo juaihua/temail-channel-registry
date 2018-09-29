@@ -1,5 +1,6 @@
 package com.syswin.temail.channel.grpc.servers;
 
+import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
@@ -50,6 +51,16 @@ public class GrpcServerTimer {
     serverTimeout.put(serverKey, timeout);
     log.debug("add new timeout task for gatewayserver :{}-{} ",
         gatewayServer.getIp(), gatewayServer.getProcessId());
-  }
 
+    //TODO
+    //if grpc client reconnect to another channel server in a short time
+    //cause of network error,  the original channel server will offLine
+    //the gateway server by mistake, so we need to check the offLine list
+    temailAcctStsService.fixPotentialMiskakeOffLine(
+        new CdtpServer(
+          gatewayServer.getIp(),
+          gatewayServer.getProcessId(),
+          gatewayServer.getCurStateBeginTime(),
+            null));
+  }
 }
