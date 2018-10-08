@@ -84,7 +84,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
       CdtpServer cdtpServer = new CdtpServer(ip, processId, curStateBeginTime, null);
       this.temailAcctStsService.registerOrRecorveryServer(cdtpServer);
       grpcServerTimer.addHeartBeatTimeout(gatewayServer);
-      log.info("{} registry server success.", gatewayServer.toString());
+      log.info("{} {} registry server success.", gatewayServer.getIp(), gatewayServer.getProcessId());
       commonResponse = this.buildCommonResponse(true, "ok");
     } catch (Exception e) {
       commonResponse = this.buildCommonResponse(false, e.getMessage());
@@ -107,7 +107,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
     try {
       grpcServerTimer.addHeartBeatTimeout(gatewayServer);
       commonResponse = this.buildCommonResponse(true, "ok");
-      log.info("{} heart beat success.", gatewayServer.toString());
+      log.info("{} {} heart beat handle success.", gatewayServer.getIp(), gatewayServer.getProcessId());
     } catch (Exception e) {
       commonResponse = this.buildCommonResponse(false, e.getMessage());
       log.error("server heartBeat fail. ", e);

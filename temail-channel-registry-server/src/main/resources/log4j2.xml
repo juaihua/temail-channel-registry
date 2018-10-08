@@ -3,7 +3,7 @@
   <properties>
     <property name="log_home">/opt/logs</property>
     <property name="displayName">cdtp-status</property>
-    <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}:%L -%m%n</Property>
+    <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}:%L %m%n</Property>
   </properties>
   <appenders>
     <Console name="console" target="SYSTEM_OUT" follow="true">

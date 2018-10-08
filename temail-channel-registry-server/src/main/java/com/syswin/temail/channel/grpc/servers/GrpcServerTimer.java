@@ -35,8 +35,8 @@ public class GrpcServerTimer {
   }
 
   public void addHeartBeatTimeout(GatewayServer gatewayServer) {
-    log.info("gateway server : {}-{} report heartBeat ",
-        gatewayServer.getIp(), gatewayServer.getProcessId());
+    //log.info("gateway server : {}-{} report heartBeat ",
+      //  gatewayServer.getIp(), gatewayServer.getProcessId());
     //if already exists, invalid the old task
     String serverKey = extractHashKey(gatewayServer);
     Optional.ofNullable(serverTimeout.get(serverKey))
