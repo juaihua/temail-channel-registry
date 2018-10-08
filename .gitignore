@@ -97,7 +97,7 @@ doc/
 *~
 .DS_Store
 
-# vue 文件
+# vue 文件 test
 node_modules/
 dist/
 npm-debug.log
