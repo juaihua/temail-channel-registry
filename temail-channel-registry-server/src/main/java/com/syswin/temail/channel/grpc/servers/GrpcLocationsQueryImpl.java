@@ -34,8 +34,7 @@ public class GrpcLocationsQueryImpl extends DispatchLocationQueryServerGrpc.Disp
       responseObserver.onNext(channelLocations);
       responseObserver.onCompleted();
     } catch (Exception e) {
-      responseObserver.onError(e);
-      log.error("get channel Locations by account fail .", e);
+      log.error("grpc server response fail. ", e);
     }
   }
 }

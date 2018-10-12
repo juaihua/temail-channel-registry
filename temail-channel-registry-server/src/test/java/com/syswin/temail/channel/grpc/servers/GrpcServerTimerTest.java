@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,19 +59,9 @@ public class GrpcServerTimerTest {
     printServerList("serverskeepHeart", serverskeepHeart);
     printServerList("allServers", allServers);
     temailAcctStsService = Mockito.mock(TemailAcctStsService.class);
-    when(temailAcctStsService.offLineTheServer(buildACdtpServer())).thenReturn(new ComnRespData("OK", true));
-    grpcServerTimer = new GrpcServerTimer(temailAcctStsService,
-      new Consumer() {
-        @Override
-        public void accept(Object o) {
-          if (o instanceof GatewayServer) {
-            serversLoseHeart.remove(o);
-            serverskeepHeart.remove(o);
-            log.info("**** **** **** remove timeout server : {}-{} **** **** ****",
-                ((GatewayServer) o).getIp(), ((GatewayServer) o).getProcessId());
-          }
-        }
-      });
+    when(temailAcctStsService.offLineTheServer(buildACdtpServer()))
+        .thenReturn(new ComnRespData("OK", true));
+    grpcServerTimer = new GrpcServerTimer(temailAcctStsService);
   }
 
   @Test
@@ -113,8 +102,7 @@ public class GrpcServerTimerTest {
     log.info("add task2 successfully.");
 
     await().atMost(90, TimeUnit.SECONDS).until(() -> {
-      return serversLoseHeart.isEmpty()
-          && serverskeepHeartSize == serverskeepHeart.size();
+      return grpcServerTimer.serverTimeout.size() == serverskeepHeartSize;
     });
   }
 
@@ -139,5 +127,4 @@ public class GrpcServerTimerTest {
       log.info("{}-{}", server.getIp(), server.getProcessId());
     }
   }
-
 }

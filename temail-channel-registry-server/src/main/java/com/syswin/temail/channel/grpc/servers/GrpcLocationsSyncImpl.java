@@ -4,7 +4,6 @@ import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
-import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   public GrpcLocationsSyncImpl(TemailAcctStsService temailAcctStsService) {
     this.temailAcctStsService = temailAcctStsService;
-    grpcServerTimer = new GrpcServerTimer(temailAcctStsService, t -> {
-    });
+    this.grpcServerTimer = new GrpcServerTimer(temailAcctStsService);
   }
 
 
@@ -41,9 +39,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
       responseObserver.onCompleted();
       log.debug("response grpc call result: {}", commonResponse.toString());
     } catch (Exception e) {
-      responseObserver.onError(Status.INTERNAL.withCause(e)
-          .withDescription("error").asRuntimeException());
-      log.error("response grpc call result fail : {}");
+      log.error("grpc server response fail. ", e);
     }
   }
 
@@ -95,13 +91,33 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
 
   /**
+   * server offLine notified by gateway server
+   *
+   * @param gatewayServer
+   * @param responseObserver
+   */
+  @Override
+  public void serverOffLine(GatewayServer gatewayServer, StreamObserver<CommonResponse> responseObserver) {
+    CommonResponse commonResponse = null;
+    try {
+      grpcServerTimer.offLineServer(gatewayServer);
+      commonResponse = this.buildCommonResponse(true, "ok");
+    } catch (Exception e) {
+      commonResponse = this.buildCommonResponse(false, e.getMessage());
+      log.error("server offLine fail : {}", e);
+    }
+    commonResponse(responseObserver, commonResponse);
+
+  }
+
+  /**
    * handle heartbeat request
    *
    * @param gatewayServer
    * @param responseObserver
    */
   @Override
-        public void serverHeartBeat(GatewayServer gatewayServer,
+  public void serverHeartBeat(GatewayServer gatewayServer,
       StreamObserver<CommonResponse> responseObserver) {
     CommonResponse commonResponse = null;
     try {

@@ -8,25 +8,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GrpcServerTimer {
 
+  final Map<String, Timeout> serverTimeout = new ConcurrentHashMap<>();
+
   private final HashedWheelTimer heartBeatTimer = new HashedWheelTimer();
-
-  private final Map<String, Timeout> serverTimeout = new ConcurrentHashMap<>();
-
-  private Consumer consumer;
-
-  //heart timeout 30 seconds
-  private final long delay = 30;
 
   private TemailAcctStsService temailAcctStsService;
 
-  public GrpcServerTimer(TemailAcctStsService temailAcctStsService, Consumer consumer) {
-    this.consumer = consumer;
+  private final long delay = 30;
+
+  public GrpcServerTimer(TemailAcctStsService temailAcctStsService) {
     this.temailAcctStsService = temailAcctStsService;
   }
 
@@ -34,33 +29,42 @@ public class GrpcServerTimer {
     return gatewayServer.getIp() + "-" + gatewayServer.getProcessId();
   }
 
-  public void addHeartBeatTimeout(GatewayServer gatewayServer) {
-    //log.info("gateway server : {}-{} report heartBeat ",
-      //  gatewayServer.getIp(), gatewayServer.getProcessId());
-    //if already exists, invalid the old task
+  void addHeartBeatTimeout(GatewayServer gatewayServer) {
+    //remove old timeout task if exits
     String serverKey = extractHashKey(gatewayServer);
-    Optional.ofNullable(serverTimeout.get(serverKey))
-        .ifPresent(timeout -> {
-          log.debug("remove recently timeout task of : {}-{} ",
-              gatewayServer.getIp(), gatewayServer.getProcessId());
-          timeout.cancel();
-        });
-    Timeout timeout = heartBeatTimer.newTimeout(new
-            GrpcServerTimerTask(temailAcctStsService, gatewayServer, consumer),
-        delay, TimeUnit.SECONDS);
+    Optional.ofNullable(serverTimeout.get(serverKey)).ifPresent(timeout -> {
+      log.debug("remove recently timeout task of : {}-{} ",
+          gatewayServer.getIp(), gatewayServer.getProcessId());
+      timeout.cancel();
+    });
+
+    //add new timeout task
+    Timeout timeout = heartBeatTimer
+        .newTimeout(new GrpcServerTimerTask<GatewayServer>(temailAcctStsService, gatewayServer,
+            t -> {
+              //remove gateway server from memory
+              serverTimeout.remove(extractHashKey(t));
+            }), delay, TimeUnit.SECONDS);
     serverTimeout.put(serverKey, timeout);
     log.debug("add new timeout task for gatewayserver :{}-{} ",
         gatewayServer.getIp(), gatewayServer.getProcessId());
 
-    //TODO
-    //if grpc client reconnect to another channel server in a short time
-    //cause of network error,  the original channel server will offLine
-    //the gateway server by mistake, so we need to check the offLine list
+    //fix potential offLine action by mistake
     temailAcctStsService.fixPotentialMiskakeOffLine(
         new CdtpServer(
-          gatewayServer.getIp(),
-          gatewayServer.getProcessId(),
-          gatewayServer.getCurStateBeginTime(),
+            gatewayServer.getIp(),
+            gatewayServer.getProcessId(),
+            gatewayServer.getCurStateBeginTime(),
             null));
   }
+
+  boolean offLineServer(GatewayServer gatewayServer) throws Exception {
+    Timeout timeout = serverTimeout.get(extractHashKey(gatewayServer));
+    if (timeout != null) {
+      timeout.task().run(timeout);
+      timeout.cancel();
+    }
+    return true;
+  }
+
 }
