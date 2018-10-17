@@ -27,16 +27,16 @@ public class StatusSyncTimer implements CommandLineRunner {
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
 
-  @Value("${app.StatusSyncTimer.offLineServerTTL}")
+  @Value("${app.channel.statusSyncTimer.offLineServerTTL}")
   private Integer offLineServerTTL;
 
-  @Value("${app.StatusSyncTimer.handleMaxTime}")
+  @Value("${app.channel.statusSyncTimer.handleMaxTime}")
   private Integer handleMaxTime;
 
-  @Value("${app.StatusSyncTimer.taskDelay}")
+  @Value("${app.channel.statusSyncTimer.taskDelay}")
   private Integer taskDelay;
 
-  @Value("${app.StatusSyncTimer.initDelay}")
+  @Value("${app.channel.statusSyncTimer.initDelay}")
   private Integer initDelay;
 
   @Override

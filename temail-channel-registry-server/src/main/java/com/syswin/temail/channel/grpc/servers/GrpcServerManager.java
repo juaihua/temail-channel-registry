@@ -15,7 +15,7 @@ public class GrpcServerManager implements ApplicationRunner {
   @Autowired
   private TemailAcctStsService temailAcctStsService;
 
-  @Value("${app.grpc.serverPort}")
+  @Value("${app.channel.grpc.serverPort}")
   private String port;
 
   @Override
