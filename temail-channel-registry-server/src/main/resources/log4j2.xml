@@ -1,36 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration status="WARN">
-  <properties>
-    <property name="log_home">/opt/logs</property>
-    <property name="displayName">cdtp-status</property>
-    <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %c{1}:%L %m%n</Property>
-  </properties>
+<configuration status="INFO" monitorInterval="1800">
   <appenders>
-    <Console name="console" target="SYSTEM_OUT" follow="true">
-      <PatternLayout>
-        <pattern>${pattern}</pattern>
-      </PatternLayout>
+    <!--控制台打印 -->
+    <Console name="CONSOLE" target="SYSTEM_OUT">
+      <PatternLayout pattern="[@project.artifactId@] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %highlight{%-5p} => %cyan{%c.%M(%F:%L)} - %m%n"/>
     </Console>
-    <File name="error" fileName="${log_home}/${displayName}_error.log" append="false">
-      <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
-      <PatternLayout>
-        <pattern>${pattern}</pattern>
-      </PatternLayout>
-    </File>
-    <RollingFile name="rollingFile" fileName="${log_home}/${displayName}.log"
-      filePattern="${displayName}_%d{yyyy-MM-dd}.log">
-      <PatternLayout>
-        <pattern>${pattern}</pattern>
-      </PatternLayout>
-      <SizeBasedTriggeringPolicy size="50 MB"/>
+    <!--当日志内容达到指定范围后，以某种定义规则打包日志文件 -->
+    <RollingFile name="RollingFile" fileName="/opt/logs/@project.artifactId@.log" filePattern="/opt/logs/@project.artifactId@-logs-%d{yyyy-MM-dd}-%i.log">
+      <PatternLayout pattern="[@project.artifactId@] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p => %c - %m%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="50MB"/><!--当日志大小达到50MB时，以上述filePattern定义的格式进行打包压缩 -->
+      </Policies>
+      <DefaultRolloverStrategy max="20"/><!--压缩包数量不超过20-->
     </RollingFile>
+    <!-- 异步输出文件 -->
+    <Async name="Async">
+      <AppenderRef ref="RollingFile"/>
+    </Async>
   </appenders>
-  <Loggers>
-    <logger name="com.mchange" level="ERROR" additivity="false"/>
+  <loggers>
     <root level="info">
-      <appenderRef ref="console"/>
-      <appenderRef ref="error"/>
-      <appenderRef ref="rollingFile"/>
+      <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="Async"/>
     </root>
-  </Loggers>
+  </loggers>
 </configuration>
