@@ -230,10 +230,6 @@
 
     <!--grpc依赖-->
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId>org.xolstice.maven.plugins</groupId>
         <artifactId>protobuf-maven-plugin</artifactId>
         <version>0.5.1</version>
@@ -289,34 +285,17 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <mainClass>com.syswin.temail.channel.TemailChannelApplication</mainClass>
-          <layout>ZIP</layout>
-          <executable>true</executable>
-          <includes>
-            <include>
-              <groupId>nothing</groupId>
-              <artifactId>nothing</artifactId>
-            </include>
-          </includes>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>libs/</classpathPrefix>
+              <mainClass>com.syswin.temail.channel.TemailChannelApplication</mainClass>
+            </manifest>
+          </archive>
         </configuration>
-        <dependencies>
-          <!-- spring热部署 -->
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.8.RELEASE</version>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <!--<plugin>
         <groupId>au.com.dius</groupId>
