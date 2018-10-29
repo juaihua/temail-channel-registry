@@ -14,14 +14,14 @@
   <properties>
     <temail-channel-common.version>1.0.0-SNAPSHOT</temail-channel-common.version>
 
-  <!--grpc相关-->
+    <!--grpc相关-->
     <grpc.version>1.15.0</grpc.version>
     <protobuf.version>3.5.1</protobuf.version>
     <protoc.version>3.5.1-1</protoc.version>
     <netty.tcnative.version>2.0.7.Final</netty.tcnative.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-  <!--grpc相关-->
+    <!--grpc相关-->
 
   </properties>
 
@@ -103,7 +103,7 @@
       <scope>test</scope>
     </dependency>
 
-  <!--disconf-->
+    <!--disconf-->
     <dependency>
       <groupId>com.systoon.integration</groupId>
       <artifactId>disconf-spring-boot-starter</artifactId>
@@ -135,7 +135,7 @@
       <version>20.0</version>
     </dependency>
 
-  <!--grpc依赖-->
+    <!--grpc依赖-->
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-netty-shaded</artifactId>
@@ -190,7 +190,7 @@
       <artifactId>protobuf-java-format</artifactId>
       <version>1.2</version>
     </dependency>
-  <!--grpc依赖-->
+    <!--grpc依赖-->
   </dependencies>
 
   <build>
@@ -228,7 +228,7 @@
     </testResources>
     <plugins>
 
-    <!--grpc依赖-->
+      <!--grpc依赖-->
       <plugin>
         <groupId>org.xolstice.maven.plugins</groupId>
         <artifactId>protobuf-maven-plugin</artifactId>
@@ -265,7 +265,7 @@
           </execution>
         </executions>
       </plugin>-->
-    <!--grpc依赖-->
+      <!--grpc依赖-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -295,6 +295,9 @@
               <mainClass>com.syswin.temail.channel.TemailChannelApplication</mainClass>
             </manifest>
           </archive>
+          <excludes>
+            <exclude>**/application.properties</exclude>
+          </excludes>
         </configuration>
       </plugin>
       <!--<plugin>
@@ -318,11 +321,11 @@
   </build>
 
   <repositories>
-     <repository>
-       <id>systoon-public</id>
-       <name>Repository for systoon-public</name>
-       <url>http://maven.systoon.com/repository/public/</url>
-     </repository>
-   </repositories>
+    <repository>
+      <id>systoon-public</id>
+      <name>Repository for systoon-public</name>
+      <url>http://maven.systoon.com/repository/public/</url>
+    </repository>
+  </repositories>
 
 </project>
