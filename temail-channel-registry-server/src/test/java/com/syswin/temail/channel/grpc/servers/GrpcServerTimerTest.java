@@ -12,12 +12,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.when;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=9100")
+@ActiveProfiles("dev")
 @Slf4j
 public class GrpcServerTimerTest {
 

@@ -10,10 +10,12 @@ import au.com.dius.pact.provider.spring.SpringRestPactRunner;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,9 +24,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 @RunWith(SpringRestPactRunner.class)
+@ActiveProfiles("dev")
 @PactBroker(host = "172.28.50.206", port = "88")
 @Provider("temail-discovery")
 @SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=9100")
+@Ignore
 public class DiscoveryProviderTest {
   @TestTarget
   public final Target target = new HttpTarget(9100);
