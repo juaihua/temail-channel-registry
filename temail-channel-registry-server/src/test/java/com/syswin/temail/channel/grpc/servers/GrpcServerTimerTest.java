@@ -25,9 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=9100")
-@ActiveProfiles("dev")
+
 @Slf4j
 public class GrpcServerTimerTest {
 
