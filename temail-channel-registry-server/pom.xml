@@ -194,7 +194,6 @@
   </dependencies>
 
   <build>
-    <finalName>${project.artifactId}</finalName>
     <extensions>
       <extension>
         <groupId>kr.motd.maven</groupId>
