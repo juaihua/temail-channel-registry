@@ -1,5 +1,8 @@
 package com.syswin.temail.channel.grpc.servers;
 
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.when;
+
 import com.syswin.temail.channel.account.CommonDataGeneUtil;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.ComnRespData;
@@ -12,17 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.awaitility.Awaitility.await;
-import static org.mockito.Mockito.when;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 
 
