@@ -1,8 +1,0 @@
-server:
-  port: 8088
-channel:
-  client:
-    serverHost: 127.0.0.1
-    serverPort: 9110
-    writeIdle: 10
-    max-retry-internal: 60
