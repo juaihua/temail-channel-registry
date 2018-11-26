@@ -23,7 +23,7 @@ class GlobaleExceptionHandler {
   @ExceptionHandler(Exception.class)
   @ResponseStatus(INTERNAL_SERVER_ERROR)
   Response<String> unexpectedException(Exception ex) {
-    log.error("服务器请求异常", ex);
+    log.error("server error ", ex);
     return Response.failed(INTERNAL_SERVER_ERROR, ex.getMessage());
   }
 }
