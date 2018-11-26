@@ -4,15 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.syswin.temail</groupId>
-  <artifactId>temail-channel-registry</artifactId>
+  <artifactId>temail-channel-registry-server</artifactId>
+  <packaging>jar</packaging>
   <version>1.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
 
   <modules>
-    <module>temail-channel-registry-common</module>
-    <module>temail-channel-registry-client</module>
     <module>temail-channel-registry-server</module>
-    <module>temail-channel-registry-client-demo</module>
   </modules>
 
   <parent>
