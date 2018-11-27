@@ -1,6 +1,11 @@
 package com.syswin.temail.channel.account.service;
 
 
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_PREFIX_ON_REDIS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
 import com.google.gson.Gson;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.ComnRespData;
@@ -18,12 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_PREFIX_ON_REDIS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
 
 @Slf4j
 @Component
@@ -65,15 +64,22 @@ public class TemailAcctStsService {
   public void delStatus(TemailAcctStses temailAcctStses) {
     try {
       temailAcctStses.getStatuses().stream().forEach(status -> {
-        String temailChannelHashKey = status.geneHashKey();
         String acctKey = new StringBuilder(TEMAIL_PREFIX_ON_REDIS).append(status.getAccount()).toString();
-        redisTemplate.opsForHash().delete(acctKey, temailChannelHashKey);
-        String hstKey = new StringBuffer(HOST_PREFIX_ON_REDIS)
-            .append(status.getHostOf()).append("-")
-            .append(status.getProcessId()).append(":")
-            .append(status.getAccount()).toString();
-        redisTemplate.opsForHash().delete(hstKey, temailChannelHashKey);
-        log.debug("delete statuses : {} successfully ", GSON.toJson(temailAcctStses));
+        String temailChannelHashKey = status.geneHashKey();
+        TemailAcctSts accts = (TemailAcctSts) redisTemplate.opsForHash().get(acctKey, temailChannelHashKey);
+        if (accts.getHostOf().equals(status.getHostOf()) && accts.getProcessId().equals(status.getProcessId())) {
+          redisTemplate.opsForHash().delete(acctKey, temailChannelHashKey);
+          String hstKey = new StringBuffer(HOST_PREFIX_ON_REDIS)
+              .append(status.getHostOf()).append("-")
+              .append(status.getProcessId()).append(":")
+              .append(status.getAccount()).toString();
+          redisTemplate.opsForHash().delete(hstKey, temailChannelHashKey);
+          log.debug("delete statuses : {} successfully ", GSON.toJson(temailAcctStses));
+        } else {
+          log.debug(
+              "the server: {} which invoke this delete request is not the server:{}  which is currently holding this channel resitry status, ignore this request ! ",
+              GSON.toJson(status), GSON.toJson(accts), GSON.toJson(temailAcctStses));
+        }
       });
     } catch (Exception e) {
       log.error("delete status fail : {}", GSON.toJson(temailAcctStses));
