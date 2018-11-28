@@ -67,7 +67,8 @@ public class TemailAcctStsService {
         String acctKey = new StringBuilder(TEMAIL_PREFIX_ON_REDIS).append(status.getAccount()).toString();
         String temailChannelHashKey = status.geneHashKey();
         TemailAcctSts accts = (TemailAcctSts) redisTemplate.opsForHash().get(acctKey, temailChannelHashKey);
-        if (accts.getHostOf().equals(status.getHostOf()) && accts.getProcessId().equals(status.getProcessId())) {
+        if ((accts == null) || (accts.getHostOf().equals(status.getHostOf()) && accts.getProcessId()
+            .equals(status.getProcessId()))) {
           redisTemplate.opsForHash().delete(acctKey, temailChannelHashKey);
           String hstKey = new StringBuffer(HOST_PREFIX_ON_REDIS)
               .append(status.getHostOf()).append("-")
@@ -77,7 +78,7 @@ public class TemailAcctStsService {
           log.debug("delete statuses : {} successfully ", GSON.toJson(temailAcctStses));
         } else {
           log.debug(
-              "the server: {} which invoke this delete request is not the server:{}  which is currently holding this channel resitry status, ignore this request ! ",
+              "the server: {} which invoke this delete request is not the server:{} which is currently holding this channel resitry status, ignore this request ! ",
               GSON.toJson(status), GSON.toJson(accts), GSON.toJson(temailAcctStses));
         }
       });
