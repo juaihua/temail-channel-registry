@@ -1,5 +1,7 @@
 package com.syswin.temail.channel.account.controller;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import com.google.gson.Gson;
 import com.syswin.temail.channel.account.beans.Response;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
@@ -13,9 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @RestController
@@ -31,7 +30,7 @@ public class TemailAcctStsController {
   public Response addStatus(
       @RequestBody TemailAcctStses temailAcctStses) {
     connectionStatusService.addStatus(temailAcctStses);
-    log.debug("added location: {}", gson.toJson(temailAcctStses));
+    log.info("added location: {}", gson.toJson(temailAcctStses));
     return Response.ok(CREATED);
   }
 
@@ -48,7 +47,7 @@ public class TemailAcctStsController {
   @ResponseStatus(OK)
   public Response locateStatus(@PathVariable String account) {
     TemailAcctStses resp = connectionStatusService.locateStatus(account);
-    log.debug("locate location: {}, {}", account, gson.toJson(resp));
+    log.info("locate location: {}, {}", account, gson.toJson(resp));
     return Response.ok(OK, resp);
   }
 

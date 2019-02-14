@@ -49,7 +49,7 @@ public class TemailAcctStsService {
             .append(status.getProcessId()).append(":")
             .append(status.getAccount()).toString();
         redisTemplate.opsForHash().put(hstKey, temailChannelHashKey, status);
-        log.debug("add Statuses service response: {}", GSON.toJson(temailAcctStses));
+        log.info("add Statuses service response: {}", GSON.toJson(temailAcctStses));
       });
     } catch (Exception e) {
       log.error("add status fail : {}", GSON.toJson(temailAcctStses));
@@ -75,9 +75,9 @@ public class TemailAcctStsService {
               .append(status.getProcessId()).append(":")
               .append(status.getAccount()).toString();
           redisTemplate.opsForHash().delete(hstKey, temailChannelHashKey);
-          log.debug("delete statuses : {} successfully ", GSON.toJson(temailAcctStses));
+          log.info("delete statuses : {} successfully ", GSON.toJson(temailAcctStses));
         } else {
-          log.debug(
+          log.info(
               "the server: {} which invoke this delete request is not the server:{} which is currently holding this channel resitry status, ignore this request ! ",
               GSON.toJson(status), GSON.toJson(accts), GSON.toJson(temailAcctStses));
         }
@@ -108,7 +108,7 @@ public class TemailAcctStsService {
       });
 
       result.setStatuses(new ArrayList(tmpRes.values()));
-      log.debug("locate statuses account: {} , response: {}", temailAccount, GSON.toJson(result));
+      log.info("locate statuses account: {} , response: {}", temailAccount, GSON.toJson(result));
     } catch (Exception e) {
       log.error("locate status fail", temailAccount);
       throw new TemailDiscoveryException("failed to locate gateway location with " + temailAccount, e);
@@ -140,7 +140,7 @@ public class TemailAcctStsService {
 
 
   /**
-   * offLine the server state by moving {@link CdtpServer} from Online-Servers to OffLine-Servers
+   * offLine the server state by copying {@link CdtpServer} from Online-Servers to OffLine-Servers
    */
   public ComnRespData offLineTheServer(CdtpServer cdtpServer) {
     try {

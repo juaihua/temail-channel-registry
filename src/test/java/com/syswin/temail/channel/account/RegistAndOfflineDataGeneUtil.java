@@ -55,6 +55,5 @@ public class RegistAndOfflineDataGeneUtil {
     log.debug("and we have {} CdtpServer objects !", cdtpServers.size());
   }
 
-  public static void main(String[] args) {
-  }
+
 }

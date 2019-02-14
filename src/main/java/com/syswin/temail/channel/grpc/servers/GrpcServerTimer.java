@@ -33,7 +33,7 @@ public class GrpcServerTimer {
     //remove old timeout task if exits
     String serverKey = extractHashKey(gatewayServer);
     Optional.ofNullable(serverTimeout.get(serverKey)).ifPresent(timeout -> {
-      log.debug("remove recently timeout task of : {}-{} ",
+      log.info("remove recently timeout task of : {}-{} ",
           gatewayServer.getIp(), gatewayServer.getProcessId());
       timeout.cancel();
     });
@@ -46,7 +46,7 @@ public class GrpcServerTimer {
               serverTimeout.remove(extractHashKey(t));
             }), delay, TimeUnit.SECONDS);
     serverTimeout.put(serverKey, timeout);
-    log.debug("add new timeout task for gatewayserver :{}-{} ",
+    log.info("add new timeout task for gatewayserver :{}-{} ",
         gatewayServer.getIp(), gatewayServer.getProcessId());
 
     //fix potential offLine action by mistake

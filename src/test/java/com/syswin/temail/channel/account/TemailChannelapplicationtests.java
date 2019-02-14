@@ -1,18 +1,13 @@
 package com.syswin.temail.channel.account;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
-
-import au.com.dius.pact.provider.junit.Provider;
-import au.com.dius.pact.provider.junit.loader.PactBroker;
-import au.com.dius.pact.provider.spring.SpringRestPactRunner;
-import java.util.ArrayList;
-import java.util.Random;
-
 import com.google.gson.Gson;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
+import java.util.ArrayList;
+import java.util.Random;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
@@ -157,5 +152,7 @@ public class TemailChannelapplicationtests {
       connectionStatusService.addStatus(request);
     }
   }
+
+
 
 }

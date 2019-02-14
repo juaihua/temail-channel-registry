@@ -37,7 +37,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
     try {
       responseObserver.onNext(commonResponse);
       responseObserver.onCompleted();
-      log.debug("response grpc call result: {}", commonResponse.toString());
+      log.info("response grpc call result: {}", commonResponse.toString());
     } catch (Exception e) {
       log.error("grpc server response fail. ", e);
     }
