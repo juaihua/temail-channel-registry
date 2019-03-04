@@ -1,12 +1,14 @@
 package com.syswin.temail.channel.account.timer;
 
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.CLEANING_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
+import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
+import com.syswin.temail.channel.account.beans.CdtpServer;
+import com.syswin.temail.channel.account.contants.RedisOptConstants;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import com.syswin.temail.channel.account.beans.CdtpServer;
-import com.syswin.temail.channel.account.contants.RedisOptConstants;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import static com.syswin.temail.channel.account.contants.RedisOptConstants.*;
 
 @Slf4j
 @Data
