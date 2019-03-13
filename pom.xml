@@ -2,12 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.syswin.temail</groupId>
   <artifactId>temail-channel-registry-server</artifactId>
-  <packaging>jar</packaging>
+  <packaging>${packaging.type}</packaging>
   <version>1.0.7-SNAPSHOT</version>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -218,6 +216,57 @@
     <!--grpc依赖-->
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>jar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <packaging.type>jar</packaging.type>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>war</id>
+      <properties>
+        <packaging.type>war</packaging.type>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+          <exclusions>
+            <exclusion>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-tomcat</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <extensions>
       <extension>
@@ -251,7 +300,6 @@
       </testResource>
     </testResources>
     <plugins>
-
       <!--grpc依赖-->
       <plugin>
         <groupId>org.xolstice.maven.plugins</groupId>
