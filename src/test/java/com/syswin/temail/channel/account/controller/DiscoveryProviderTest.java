@@ -58,6 +58,7 @@ public class DiscoveryProviderTest {
     return new TemailAcctSts(
         sean,
         "iOS-sean",
+        "pc",
         "localhost",
         "12345",
         "temail-gateway",

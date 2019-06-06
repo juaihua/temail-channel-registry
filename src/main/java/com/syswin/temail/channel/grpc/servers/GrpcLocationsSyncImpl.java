@@ -54,7 +54,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
     List<TemailAcctSts> acctStses = new ArrayList<TemailAcctSts>();
     channelLocations.getChannelLocationListList().forEach(channelLocation -> {
       acctStses.add(
-          new TemailAcctSts(channelLocation.getAccount(), channelLocation.getDevId(),
+          new TemailAcctSts(channelLocation.getAccount(), channelLocation.getDevId(),channelLocation.getPlatform(),
               channelLocation.getHostOf(), channelLocation.getProcessId(),
               channelLocation.getMqTopic(), channelLocation.getMqTag()));
     });

@@ -17,6 +17,8 @@ public class TemailAcctSts {
 
   private String devId;
 
+  private String platform;
+
   private String hostOf;
 
   private String processId;

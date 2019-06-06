@@ -63,7 +63,7 @@ public class TemailChannelapplicationtests {
       TemailAcctStses request = new TemailAcctStses();
       request.setStatuses(new ArrayList<TemailAcctSts>() {{
         add(new TemailAcctSts("temailStatusTestaAcct@temail.com",
-            "TestDevId-1", "192.168.197.38", "9812", "mqTopci", "mqTag"));
+            "TestDevId-1","pc", "192.168.197.38", "9812", "mqTopci", "mqTag"));
       }});
       MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/locations")
           .contentType("application/json;charset=utf-8")
@@ -111,7 +111,7 @@ public class TemailChannelapplicationtests {
       request.setStatuses(new ArrayList<TemailAcctSts>() {{
         add(new
             TemailAcctSts("temailStatusTestaAcct@temail.com",
-            "TestDevId-1", "192.168.197.38", "9812", "mqTopci", "mqTag"));
+            "TestDevId-1","pc", "192.168.197.38", "9812", "mqTopci", "mqTag"));
       }});
       MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/locations")
           .contentType("application/json;charset=utf-8")
