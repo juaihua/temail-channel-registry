@@ -207,6 +207,11 @@
       <version>1.2</version>
     </dependency>
     <!--grpc依赖-->
+    <!--healthcheck-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
   </dependencies>
 
   <profiles>
