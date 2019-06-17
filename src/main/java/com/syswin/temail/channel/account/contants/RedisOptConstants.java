@@ -18,7 +18,6 @@ public class RedisOptConstants {
   public static final String ONLINE_SERVERS = REDIS_DATA_PREFIX + "onLine-servers";
   public static final String OFFLINE_SERVERS = REDIS_DATA_PREFIX + "offLine-servers";
   public static final String CLEANING_SERVERS = REDIS_DATA_PREFIX + "cleaning-servers";
-  private static final Logger LOGGER = LoggerFactory.getLogger(StatusSyncTimer.class);
 
   public static String format() {
     return format(new Date());

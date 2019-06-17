@@ -93,7 +93,7 @@ public class TemailAcctStsService {
    * obtain channels info
    */
   public TemailAcctStses locateStatus(String temailAccount) {
-    Map<String, TemailAcctSts> tmpRes = new HashMap<String, TemailAcctSts>();
+    Map<String, TemailAcctSts> tmpRes = new HashMap<>();
     TemailAcctStses result = new TemailAcctStses();
     try {
       Map<Object, Object> statusHash = redisTemplate.opsForHash().entries(TEMAIL_PREFIX_ON_REDIS + temailAccount);
@@ -110,7 +110,7 @@ public class TemailAcctStsService {
       result.setStatuses(new ArrayList(tmpRes.values()));
       log.info("locate statuses account: {} , response: {}", temailAccount, GSON.toJson(result));
     } catch (Exception e) {
-      log.error("locate status fail", temailAccount);
+      log.error("locate status fail, temail account is {}", temailAccount);
       throw new TemailDiscoveryException("failed to locate gateway location with " + temailAccount, e);
     }
     return result;
