@@ -117,21 +117,10 @@ public class TemailAcctStsService {
    * obtain channels info
    */
   public TemailAcctStses locateStatus(String temailAccount) {
-    Map<String, TemailAcctSts> tmpRes = new HashMap<>();
     TemailAcctStses result = new TemailAcctStses();
     try {
       Map<Object, Object> statusHash = redisTemplate.opsForHash().entries(TEMAIL_PREFIX_ON_REDIS + temailAccount);
-      Optional.ofNullable(statusHash).ifPresent(new Consumer<Map>() {
-        @Override
-        public void accept(Map map) {
-          map.forEach((k, v) -> {
-            TemailAcctSts tmp = ((TemailAcctSts) v);
-            tmpRes.put(tmp.dispathUniqueKey(), tmp);
-          });
-        }
-      });
-
-      result.setStatuses(new ArrayList(tmpRes.values()));
+      result.setStatuses(new ArrayList(statusHash.values()));
       log.info("locate statuses account: {} , response: {}", temailAccount, GSON.toJson(result));
     } catch (Exception e) {
       log.error("locate status fail, temail account is {}", temailAccount);
