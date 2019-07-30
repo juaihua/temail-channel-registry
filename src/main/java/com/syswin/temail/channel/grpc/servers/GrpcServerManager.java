@@ -25,6 +25,7 @@
 package com.syswin.temail.channel.grpc.servers;
 
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
+import com.syswin.temail.channel.loginhistory.LoginHistoryRunner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,13 +40,16 @@ public class GrpcServerManager implements ApplicationRunner {
   @Autowired
   private TemailAcctStsService temailAcctStsService;
 
+  @Autowired
+  private LoginHistoryRunner loginHistoryRunner;
+
   @Value("${app.channel.grpc.serverPort}")
   private String port;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
     log.info("start grpc server...");
-    new GrpcServerStarter(temailAcctStsService, Integer.parseInt(port)).start();
+    new GrpcServerStarter(temailAcctStsService, loginHistoryRunner, Integer.parseInt(port)).start();
   }
 
 }

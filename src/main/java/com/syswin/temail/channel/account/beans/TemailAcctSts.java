@@ -43,6 +43,8 @@ public class TemailAcctSts {
 
   private String platform;
 
+  private String appVer;
+
   private String hostOf;
 
   private String processId;

@@ -28,6 +28,7 @@ import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
+import com.syswin.temail.channel.loginhistory.LoginHistoryRunner;
 import io.grpc.stub.StreamObserver;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,17 +44,18 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   private final GrpcServerTimer grpcServerTimer;
 
-  public GrpcLocationsSyncImpl(TemailAcctStsService temailAcctStsService) {
+  private final LoginHistoryRunner loginHistoryRunner;
+
+  public GrpcLocationsSyncImpl(TemailAcctStsService temailAcctStsService,
+      LoginHistoryRunner loginHistoryRunner) {
     this.temailAcctStsService = temailAcctStsService;
+    this.loginHistoryRunner = loginHistoryRunner;
     this.grpcServerTimer = new GrpcServerTimer(temailAcctStsService);
   }
 
 
   /**
    * response a common data
-   *
-   * @param responseObserver
-   * @param commonResponse
    */
   private void commonResponse(StreamObserver<CommonResponse>
       responseObserver, CommonResponse commonResponse) {
@@ -70,15 +72,13 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   /**
    * build List<TemailAcctSts> from ChannelLocations
-   *
-   * @param channelLocations
-   * @return
    */
   private List<TemailAcctSts> transform2TemailAcctStses(ChannelLocations channelLocations) {
     List<TemailAcctSts> acctStses = new ArrayList<TemailAcctSts>();
     channelLocations.getChannelLocationListList().forEach(channelLocation -> {
       acctStses.add(
-          new TemailAcctSts(channelLocation.getAccount(), channelLocation.getDevId(),channelLocation.getPlatform(),
+          new TemailAcctSts(channelLocation.getAccount(), channelLocation.getDevId(), channelLocation.getPlatform(),
+              channelLocation.getAppVer(),
               channelLocation.getHostOf(), channelLocation.getProcessId(),
               channelLocation.getMqTopic(), channelLocation.getMqTag()));
     });
@@ -88,9 +88,6 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   /**
    * handle a registry request
-   *
-   * @param gatewayServer
-   * @param responseObserver
    */
   @Override
   public void serverRegistry(GatewayServer gatewayServer,
@@ -116,9 +113,6 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   /**
    * server offLine notified by gateway server
-   *
-   * @param gatewayServer
-   * @param responseObserver
    */
   @Override
   public void serverOffLine(GatewayServer gatewayServer, StreamObserver<CommonResponse> responseObserver) {
@@ -136,9 +130,6 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   /**
    * handle heartbeat request
-   *
-   * @param gatewayServer
-   * @param responseObserver
    */
   @Override
   public void serverHeartBeat(GatewayServer gatewayServer,
@@ -158,9 +149,6 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   /**
    * handle channelLocations sync request
-   *
-   * @param channelLocations
-   * @param responseObserver
    */
   @Override
   public void syncChannelLocations(ChannelLocations channelLocations,
@@ -169,6 +157,7 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
     try {
       List<TemailAcctSts> acctStses = transform2TemailAcctStses(channelLocations);
       this.temailAcctStsService.addStatus(new TemailAcctStses(acctStses));
+      this.loginHistoryRunner.persistAcctStses(new TemailAcctStses(acctStses));
       commonResponse = this.buildCommonResponse(true, "ok");
       log.info("{} sync channel Locations success.", channelLocations.toString());
     } catch (Exception e) {
@@ -181,9 +170,6 @@ public class GrpcLocationsSyncImpl extends GatewayRegistrySyncServerGrpc.Gateway
 
   /**
    * handle channelLocations remove request
-   *
-   * @param channelLocations
-   * @param responseObserver
    */
   @Override
   public void removeChannelLocations(ChannelLocations channelLocations,

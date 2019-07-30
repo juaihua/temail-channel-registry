@@ -25,6 +25,7 @@
 package com.syswin.temail.channel.grpc.servers;
 
 import com.syswin.temail.channel.account.service.TemailAcctStsService;
+import com.syswin.temail.channel.loginhistory.LoginHistoryRunner;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.IOException;
@@ -37,10 +38,14 @@ public class GrpcServerStarter {
 
   private final TemailAcctStsService temailAcctStsService;
 
+  private final LoginHistoryRunner loginHistoryRunner;
+
   private final int port;
 
-  public GrpcServerStarter(TemailAcctStsService temailAcctStsService, int port) {
+  public GrpcServerStarter(TemailAcctStsService temailAcctStsService, LoginHistoryRunner loginHistoryRunner,
+      int port) {
     this.port = port;
+    this.loginHistoryRunner = loginHistoryRunner;
     this.temailAcctStsService = temailAcctStsService;
   }
 
@@ -50,7 +55,7 @@ public class GrpcServerStarter {
   public void start() throws IOException {
     //start grpc server and add a hook to clean resources when jvm close;
     server = ServerBuilder.forPort(port)
-        .addService(new GrpcLocationsSyncImpl(temailAcctStsService))
+        .addService(new GrpcLocationsSyncImpl(temailAcctStsService, loginHistoryRunner))
         .addService(new GrpcLocationsQueryImpl(temailAcctStsService))
         .build().start();
     log.info("grpc server start successfully.");

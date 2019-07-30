@@ -54,6 +54,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = DEFINED_PORT, properties = "server.port=9100")
 @Ignore
 public class DiscoveryProviderTest {
+
   @TestTarget
   public final Target target = new HttpTarget(9100);
   private final String sean = "sean@t.email";
@@ -83,6 +84,7 @@ public class DiscoveryProviderTest {
         sean,
         "iOS-sean",
         "pc",
+        "2.5.0",
         "localhost",
         "12345",
         "temail-gateway",

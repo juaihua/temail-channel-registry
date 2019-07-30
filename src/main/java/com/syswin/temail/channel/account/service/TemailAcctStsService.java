@@ -30,20 +30,26 @@ import static com.syswin.temail.channel.account.contants.RedisOptConstants.HOST_
 import static com.syswin.temail.channel.account.contants.RedisOptConstants.OFFLINE_SERVERS;
 import static com.syswin.temail.channel.account.contants.RedisOptConstants.ONLINE_SERVERS;
 import static com.syswin.temail.channel.account.contants.RedisOptConstants.TEMAIL_PREFIX_ON_REDIS;
+
 import com.google.gson.Gson;
+import com.syswin.temail.channel.TemailChannelProperties;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.ComnRespData;
+import com.syswin.temail.channel.account.beans.LoginHistory;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
 import com.syswin.temail.channel.account.beans.TemailAcctStses;
 import com.syswin.temail.channel.account.contants.RedisOptConstants;
 import com.syswin.temail.channel.exceptions.TemailDiscoveryException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.MQProducer;
+import org.apache.rocketmq.common.message.Message;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -54,6 +60,12 @@ public class TemailAcctStsService {
 
   @Autowired
   private RedisTemplate<String, Object> redisTemplate;
+
+  @Autowired
+  private MQProducer mqProducer;
+
+  @Autowired
+  private TemailChannelProperties properties;
 
   private static final Gson GSON = new Gson();
 
@@ -179,8 +191,6 @@ public class TemailAcctStsService {
 
   /**
    * if server is in offLine state, reset to onLine
-   *
-   * @param cdtpServer
    */
   public void fixPotentialMiskakeOffLine(CdtpServer cdtpServer) {
     Object o = redisTemplate.opsForHash().get(ONLINE_SERVERS, cdtpServer.hashKey());

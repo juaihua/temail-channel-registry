@@ -25,6 +25,7 @@
 package com.syswin.temail.channel.account;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
+
 import com.google.gson.Gson;
 import com.syswin.temail.channel.account.beans.CdtpServer;
 import com.syswin.temail.channel.account.beans.TemailAcctSts;
@@ -87,7 +88,7 @@ public class TemailChannelapplicationtests {
       TemailAcctStses request = new TemailAcctStses();
       request.setStatuses(new ArrayList<TemailAcctSts>() {{
         add(new TemailAcctSts("temailStatusTestaAcct@temail.com",
-            "TestDevId-1","pc", "192.168.197.38", "9812", "mqTopci", "mqTag"));
+            "TestDevId-1", "pc", "2.5.0", "192.168.197.38", "9812", "mqTopci", "mqTag"));
       }});
       MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/locations")
           .contentType("application/json;charset=utf-8")
@@ -135,7 +136,7 @@ public class TemailChannelapplicationtests {
       request.setStatuses(new ArrayList<TemailAcctSts>() {{
         add(new
             TemailAcctSts("temailStatusTestaAcct@temail.com",
-            "TestDevId-1","pc", "192.168.197.38", "9812", "mqTopci", "mqTag"));
+            "TestDevId-1", "pc", "2.5.0", "192.168.197.38", "9812", "mqTopci", "mqTag"));
       }});
       MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/locations")
           .contentType("application/json;charset=utf-8")
@@ -176,7 +177,6 @@ public class TemailChannelapplicationtests {
       connectionStatusService.addStatus(request);
     }
   }
-
 
 
 }
