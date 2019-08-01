@@ -74,7 +74,9 @@ public class LoginHistoryRunner implements CommandLineRunner {
       });
       //make mq message and send
       log.info("send login info to mq {}", temailAcctStses);
-      mqProducer.send(messages);
+      if (!messages.isEmpty()) {
+        mqProducer.send(messages);
+      }
     } catch (Exception e) {
       log.info("persist login info error,login info is {}", temailAcctStses, e);
     }
@@ -95,8 +97,15 @@ public class LoginHistoryRunner implements CommandLineRunner {
   /**
    * persist the login only when the appVer is not null
    */
-  private boolean isNeedPersist(LoginHistory loginHistory) {
+  private static boolean isNeedPersist(LoginHistory loginHistory) {
     return StringUtils.isNotEmpty(loginHistory.getAppVer());
   }
 
+
+  public static void main(String[] args) {
+    LoginHistory loginHistory = new LoginHistory();
+    loginHistory.setAppVer("2.4.0I");
+
+    System.out.println(isNeedPersist(loginHistory));
+  }
 }
