@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.MQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.BeanUtils;
@@ -64,10 +65,12 @@ public class LoginHistoryRunner implements CommandLineRunner {
     try {
       temailAcctStses.getStatuses().forEach(acctSts -> {
         LoginHistory loginHistory = transAcctStatusToLoginHistory(acctSts);
-        String jsonStr = gson.toJson(loginHistory);
-        Message message = new Message(mqTopic, "tagB",
-            jsonStr.getBytes(StandardCharsets.UTF_8));
-        messages.add(message);
+        if (isNeedPersist(loginHistory)) {
+          String jsonStr = gson.toJson(loginHistory);
+          Message message = new Message(mqTopic, "tagB",
+              jsonStr.getBytes(StandardCharsets.UTF_8));
+          messages.add(message);
+        }
       });
       //make mq message and send
       log.info("send login info to mq {}", temailAcctStses);
@@ -87,6 +90,13 @@ public class LoginHistoryRunner implements CommandLineRunner {
 
   public void persistAcctStses(TemailAcctStses stses) {
     this.blockingQueue.offer(stses);
+  }
+
+  /**
+   * persist the login only when the appVer is not null
+   */
+  private boolean isNeedPersist(LoginHistory loginHistory) {
+    return StringUtils.isNotEmpty(loginHistory.getAppVer());
   }
 
 }
