@@ -101,11 +101,4 @@ public class LoginHistoryRunner implements CommandLineRunner {
     return StringUtils.isNotEmpty(loginHistory.getAppVer());
   }
 
-
-  public static void main(String[] args) {
-    LoginHistory loginHistory = new LoginHistory();
-    loginHistory.setAppVer("2.4.0I");
-
-    System.out.println(isNeedPersist(loginHistory));
-  }
 }
